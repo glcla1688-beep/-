@@ -1,0 +1,4008 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎂 张可心生日快乐！</title>
+    <style>
+        :root {
+            --z-bg: 0;
+            --z-content: 10;
+            --z-ui: 100;
+            --z-overlay: 200;
+            --z-whisper: 300;
+            --z-ending: 400;
+            --z-modal: 1000;
+            --z-lightbox: 20000;
+            --z-envelope: 9998;
+            --z-wish: 9999;
+            --z-stamp: 10000;
+            --z-music: 10010;
+            --z-goon: 10030;
+            --z-password: 35000;
+            --z-egg: 40000;
+            --z-puzzle: 50000;
+            --z-puzzle-music: 50100;
+            --z-credits: 60000;
+        }
+
+        /* ========== 全局重置和背景 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            position: relative;
+        }
+
+        /* 背景光点 */
+        .glow-dot {
+            position: fixed;
+            z-index: var(--z-bg);
+            pointer-events: none;
+            border-radius: 50%;
+            background: #ffe9b8;
+            animation: floatGlow 6s ease-in-out infinite;
+        }
+        @keyframes floatGlow {
+            0%, 100% { transform: translateY(0px); opacity: 0.25; }
+            50% { transform: translateY(-20px); opacity: 0.45; }
+        }
+
+        /* ========== 信封覆盖层 ========== */
+        .envelope-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-wish);
+            cursor: pointer;
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .envelope-body {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fdf6ec;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.05);
+            transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .envelope-body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 0px, rgba(255,255,255,0.15) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+        }
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 50vw solid transparent;
+            border-right: 50vw solid transparent;
+            border-top: 20vh solid #f1e0c8;
+            filter: drop-shadow(0 6px 6px rgba(0,0,0,0.1));
+            transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .envelope-flap-bottom {
+            position: absolute;
+            bottom: 0; left: 50%; transform: translateX(-50%) rotate(180deg);
+            width: 0; height: 0;
+            border-left: 50vw solid transparent;
+            border-right: 50vw solid transparent;
+            border-top: 20vh solid #e8d5b7;
+            transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .envelope-text {
+            position: absolute;
+            top: 30%; left: 50%; transform: translateX(-50%);
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            color: #5a3e2b;
+            letter-spacing: 6px;
+            font-weight: bold;
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+            white-space: nowrap;
+        }
+        .headphone-hint-envelope {
+            position: absolute;
+            top: 70%; left: 50%; transform: translateX(-50%);
+            font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+            color: #7a4a2b;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 6px 18px;
+            border-radius: 30px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+            z-index: var(--z-ui);
+        }
+        .stamp {
+            position: absolute;
+            top: 55%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
+            width: 80px; height: 80px;
+            background: #d43c3c;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.15s, box-shadow 0.15s, opacity 0.7s cubic-bezier(0.22,0.61,0.36,1);
+            user-select: none;
+            z-index: var(--z-stamp);
+        }
+        .stamp:active { transform: translate(-50%, -50%) rotate(-15deg) scale(0.85); box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+
+        .envelope-overlay.animate-split .envelope-body { transform: translateX(-100%); opacity: 0; }
+        .envelope-overlay.animate-split .envelope-flap { transform: translateX(-100%) translateX(-50%) rotate(-10deg); opacity: 0; }
+        .envelope-overlay.animate-split .envelope-flap-bottom { transform: translateX(100%) translateX(-50%) rotate(10deg); opacity: 0; }
+        .envelope-overlay.animate-split .envelope-text,
+        .envelope-overlay.animate-split .headphone-hint-envelope,
+        .envelope-overlay.animate-split .stamp { opacity: 0; }
+
+        /* ========== 许愿覆盖层 ========== */
+        .wish-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-envelope);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: rgba(20,10,30,0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: background 1.2s ease, backdrop-filter 1.2s ease;
+        }
+        .wish-overlay.active { display: flex; }
+        .wish-overlay.lights-on { background: rgba(20,10,30,0.0); backdrop-filter: blur(0px); }
+
+        /* 蛋糕样式 */
+        .cake-container { position: relative; margin-bottom: 30px; margin-top: 40px; }
+        .cake-layer-bottom {
+            position: relative;
+            width: 220px; height: 90px;
+            background: linear-gradient(145deg, #ffe9c7, #ffd6a8);
+            border-radius: 18px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+            z-index: var(--z-content);
+        }
+        .cake-layer-bottom::before {
+            content: '';
+            position: absolute;
+            top: -16px; left: -5px; width: 230px; height: 30px;
+            background: #fff5e6;
+            border-radius: 50%;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+        .cake-layer-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; left: -2px; width: 224px; height: 18px;
+            background: #f2c48d;
+            border-radius: 0 0 18px 18px;
+            z-index: var(--z-content);
+        }
+        .cake-layer-top {
+            position: absolute;
+            top: -60px; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 65px;
+            background: linear-gradient(145deg, #ffefd8, #ffd9b0);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: var(--z-content);
+        }
+        .cake-layer-top::before {
+            content: '';
+            position: absolute;
+            top: -12px; left: -4px; width: 158px; height: 24px;
+            background: #fff9f0;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        .cake-layer-top::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 0; width: 100%; height: 14px;
+            background: #f6d5ae;
+            border-radius: 0 0 15px 15px;
+        }
+        .cream-dots {
+            position: absolute;
+            top: -22px; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 20px;
+            z-index: var(--z-content);
+            display: flex; justify-content: center; gap: 4px;
+        }
+        .cream-dot {
+            width: 18px; height: 18px;
+            background: #fffaf2;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .cherry {
+            position: absolute;
+            top: -30px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 16px;
+            background: radial-gradient(circle at 35% 35%, #ff4d4d, #b30000);
+            border-radius: 50%;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            z-index: var(--z-content);
+        }
+        .cherry::before {
+            content: '';
+            position: absolute;
+            top: -6px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 8px;
+            background: #5a3e2b;
+            border-radius: 2px;
+        }
+        .candle {
+            position: absolute;
+            top: -60px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 55px;
+            background: repeating-linear-gradient(90deg, #ffb6c1 0px, #ffb6c1 6px, #ff8da1 6px, #ff8da1 12px);
+            border-radius: 5px 5px 2px 2px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.15);
+            z-index: var(--z-content);
+        }
+        .wick {
+            position: absolute;
+            top: -8px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 8px;
+            background: #5a3e2b;
+            border-radius: 2px;
+            z-index: var(--z-content);
+        }
+        .flame-glow {
+            position: absolute;
+            top: -28px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 30px;
+            background: rgba(255, 200, 100, 0.4);
+            border-radius: 50%;
+            filter: blur(6px);
+            animation: flameGlowPulse 1.5s ease-in-out infinite;
+            z-index: var(--z-content);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .flame-main {
+            position: absolute;
+            top: -24px; left: 50%; transform: translateX(-50%);
+            width: 12px; height: 16px;
+            background: radial-gradient(circle, #fff7b0 0%, #ffb347 60%, #ff6b6b 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flameFlicker 0.25s infinite alternate;
+            box-shadow: 0 0 15px rgba(255, 180, 80, 0.8);
+            z-index: var(--z-content);
+            transition: opacity 0.4s ease, transform 0.5s ease;
+        }
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(0.9) rotate(2deg); }
+        }
+        @keyframes flameGlowPulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+        .plate {
+            position: absolute;
+            bottom: -18px; left: 50%; transform: translateX(-50%);
+            width: 240px; height: 30px;
+            background: linear-gradient(145deg, #f8f8f8, #e0e0e0);
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: var(--z-content);
+        }
+        .cake-glow {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; height: 200px;
+            background: rgba(255, 200, 120, 0.2);
+            border-radius: 50%;
+            filter: blur(30px);
+            z-index: var(--z-bg);
+            pointer-events: none;
+        }
+
+        /* 吹灭状态：只让火焰消失，蜡烛保持原色 */
+        .wish-overlay.blown .flame-main {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.1);
+            animation: none;
+        }
+        .wish-overlay.blown .flame-glow {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.1);
+            animation: none;
+        }
+        .wish-overlay.blown .smoke {
+            opacity: 1;
+            transform: translate(-50%, -40px) scale(2);
+            transition-delay: 0.6s;
+        }
+        .smoke {
+            position: absolute;
+            top: -30px; left: 50%; transform: translateX(-50%);
+            width: 10px; height: 15px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 1.2s ease;
+            transition-delay: 0s;
+            z-index: var(--z-content);
+            pointer-events: none;
+        }
+
+        .wish-text {
+            font-size: clamp(2.6rem, 9vw, 4rem);
+            color: #ffe9b8;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255,220,150,0.6);
+        }
+        .ps-hint {
+            font-size: 1rem;
+            color: #ffe9b8;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            margin-top: -8px;
+            margin-bottom: 25px;
+            opacity: 0.8;
+            transform: rotate(-3deg);
+            text-shadow: 0 0 10px rgba(255,220,150,0.3);
+        }
+
+        .btn {
+            padding: 16px 40px;
+            font-size: 1.6rem;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50px;
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+            user-select: none;
+            margin-bottom: 15px;
+            z-index: var(--z-ui);
+        }
+        .btn:active { transform: scale(0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform: none; }
+        .btn.praying {
+            animation: prayingBlink 1.8s ease-in-out infinite;
+            cursor: default;
+            pointer-events: none;
+        }
+        @keyframes prayingBlink {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        /* 按钮淡出动画 */
+        .btn-fade-out {
+            opacity: 0 !important;
+            transform: scale(0.9) !important;
+            pointer-events: none !important;
+            transition: opacity 0.4s ease, transform 0.4s ease !important;
+        }
+
+        /* 开灯按钮 */
+        .light-on-btn {
+            padding: 14px 35px;
+            font-size: 1.3rem;
+            background: rgba(255, 240, 210, 0.7);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 40px;
+            color: #4a2b5e;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: var(--z-ui);
+            margin-top: 15px;
+            display: none;
+        }
+        .light-on-btn.show { display: inline-block; }
+        .light-on-btn:active { transform: scale(0.95); box-shadow: 0 3px 8px rgba(0,0,0,0.25); }
+
+        /* go on 箭头 */
+        .go-on-arrow {
+            display: none;
+            position: fixed;
+            bottom: 18vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: var(--z-goon);
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 240, 210, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #4a2b5e;
+            font-size: 2.2rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 8px 20px rgba(150, 100, 180, 0.2);
+            user-select: none;
+            transition: transform 0.2s;
+            animation: goOnPulse 1.5s ease-in-out infinite;
+        }
+        .go-on-arrow.show { display: flex; }
+        .go-on-arrow:active { transform: translateX(-50%) scale(0.9); }
+        .go-on-arrow span { font-size: 0.85rem; letter-spacing: 1px; margin-top: -5px; font-weight: bold; }
+        @keyframes goOnPulse {
+            0%, 100% { box-shadow: 0 8px 20px rgba(150, 100, 180, 0.2); }
+            50% { box-shadow: 0 8px 30px rgba(150, 100, 180, 0.35); }
+        }
+
+        /* 音乐按钮 */
+        .wish-music-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: var(--z-music);
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .wish-music-toggle:active { transform: scale(0.9); }
+        .wish-headphone-hint {
+            position: fixed;
+            top: 26px; right: 80px;
+            z-index: var(--z-music);
+            background: white;
+            color: #4a2b5e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .wish-headphone-hint::after {
+            content: '';
+            position: absolute;
+            top: 50%; right: -6px;
+            transform: translateY(-50%);
+            width: 0; height: 0;
+            border-left: 8px solid white;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+        .wish-headphone-hint.show { opacity: 1; }
+
+        @media (max-width: 600px) {
+            .cake-container { transform: scale(0.8); }
+            .wish-music-toggle { width: 42px; height: 42px; font-size: 1.2rem; top: 12px; right: 12px; }
+            .wish-headphone-hint { top: 16px; right: 60px; font-size: 0.8rem; padding: 6px 12px; }
+            .stamp { width: 60px; height: 60px; font-size: 1.6rem; }
+            .go-on-arrow { bottom: 15vh; width: 70px; height: 70px; font-size: 2rem; }
+            .go-on-arrow span { font-size: 0.75rem; }
+        }
+
+        /* [全局重置和背景 已移至文件顶部] */
+
+        /* ========== 主内容 ========== */
+        .page-content {
+            position: relative;
+            z-index: var(--z-ui);
+            width: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .page-content.active { display: flex; }
+
+        /* 磨砂玻璃卡片 */
+        .card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 30px 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            box-shadow: 0 20px 40px rgba(150, 100, 180, 0.25),
+                        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            animation: fadeIn 1.5s ease-out;
+            max-width: 90vw;
+            max-height: 90vh;
+            max-height: 90dvh;
+            overflow-y: auto;
+            margin: 20px;
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .card.fade-out {
+            opacity: 0;
+            transform: scale(0.85);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        h1 {
+            font-size: clamp(2.3rem, 7vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b9d, #c44dff, #6a5acd);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 3s ease-in-out infinite, bounceTitle 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 150, 200, 0.3);
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes bounceTitle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cake {
+            font-size: clamp(3.5rem, 12vw, 6rem);
+            display: inline-block;
+            animation: floatCake 2.5s ease-in-out infinite;
+            margin: 10px 0;
+            cursor: pointer;
+            filter: drop-shadow(0 12px 20px rgba(255, 120, 160, 0.4));
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .cake:hover { transform: scale(1.1); }
+        .cake:active { transform: scale(0.95); }
+
+        @keyframes floatCake {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        .hint {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: #8a5a9e;
+            margin: 5px 0 10px 0;
+            font-weight: 400;
+            letter-spacing: 1px;
+            animation: hintPulse 2s ease-in-out infinite;
+        }
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .message {
+            font-size: clamp(1.3rem, 3.8vw, 1.9rem);
+            color: #4a2b5e;
+            margin: 10px 0 5px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+        }
+        .message .highlight {
+            color: #e75480;
+            font-weight: 700;
+        }
+
+        .signature {
+            font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+            color: rgba(80, 40, 100, 0.75);
+            font-style: italic;
+            border-top: 1px solid rgba(180, 140, 200, 0.35);
+            padding-top: 12px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* 环绕图片样式 */
+        .floating-image {
+            position: absolute;
+            z-index: var(--z-ui);
+            pointer-events: auto;
+            cursor: pointer;
+            width: 204px;
+            height: auto;
+            border-radius: 12px;
+            border: 4px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 25px rgba(150, 100, 180, 0.35);
+            background: white;
+            transition: left 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        top 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+            opacity: 0;
+        }
+        .floating-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* ===== 照片评价气泡 ===== */
+        .photo-caption {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            color: #4a2b5e;
+            font-size: 0.9rem;
+            padding: 5px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            transition: opacity 0.4s;
+            opacity: 0;
+            z-index: var(--z-ui);
+            pointer-events: none;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .photo-caption.show {
+            opacity: 1;
+        }
+        /* 默认在图片下方 */
+        .photo-caption.caption-bottom {
+            top: calc(100% + 8px);
+        }
+        /* 图片靠下时，气泡在图片上方 */
+        .photo-caption.caption-top {
+            bottom: calc(100% + 8px);
+            top: auto;
+        }
+
+        /* 照片放大查看层 */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: var(--z-whisper);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 16px;
+            border: 6px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            background: white;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .lightbox.active img { transform: scale(1); }
+
+        /* 第九张大图 */
+        .ninth-image {
+            position: absolute;
+            z-index: var(--z-ui);
+            pointer-events: auto;
+            cursor: pointer;
+            width: 510px;
+            height: auto;
+            max-width: 85vw;
+            border-radius: 16px;
+            border: 6px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            background: white;
+            transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3);
+        }
+        /* 交叉渐变 - 用于第九张与第十张同时过渡 */
+        .ninth-image.cross-fade-out {
+            animation: ninthFadeOut 2.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .ninth-image.cross-fade-in {
+            animation: ninthFadeIn 2.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes ninthFadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        @keyframes ninthFadeIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        /* 点击第十张后:快速淡出 + 轻微缩小 */
+        .ninth-image.cross-fade-out-quick {
+            animation: ninthFadeOutQuick 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes ninthFadeOutQuick {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+        }
+        .ninth-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* 五彩纸屑 */
+        .confetti {
+            position: absolute;
+            top: -10px;
+            width: 12px;
+            height: 12px;
+            opacity: 0.9;
+            border-radius: 2px;
+            animation: confettiFall linear infinite;
+            z-index: var(--z-content);
+            pointer-events: none;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg) scale(0.8); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg) scale(0.2); opacity: 0; }
+        }
+
+        /* 浮动气球 */
+        .balloon {
+            position: absolute;
+            z-index: var(--z-bg);
+            pointer-events: none;
+            font-size: 3rem;
+            animation: floatBalloon linear infinite;
+            opacity: 0.7;
+            filter: drop-shadow(0 8px 12px rgba(180, 120, 200, 0.4));
+        }
+        @keyframes floatBalloon {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-20vh) rotate(15deg) scale(1.2); opacity: 0; }
+        }
+
+        /* 音乐按钮 */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: var(--z-lightbox);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(150, 100, 180, 0.3);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .music-toggle:active { transform: scale(0.9); }
+
+        .headphone-hint-music {
+            position: fixed;
+            top: 26px;
+            right: 80px;
+            z-index: var(--z-lightbox);
+            background: white;
+            color: #4a2b5e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .headphone-hint-music::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -6px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid white;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+        .headphone-hint-music.show { opacity: 1; }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px 15px;
+                border-radius: 30px;
+                margin: 10px;
+            }
+            .floating-image { width: 136px; }
+            .ninth-image { width: 85vw; max-width: 340px; }
+            .music-toggle { width: 42px; height: 42px; font-size: 1.2rem; top: 12px; right: 12px; }
+            .headphone-hint-music { top: 16px; right: 60px; font-size: 0.8rem; padding: 6px 12px; }
+            .photo-caption { font-size: 0.75rem; padding: 4px 10px; }
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            position: relative;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 背景光点 */
+        .glow-dot {
+            position: fixed;
+            z-index: var(--z-bg);
+            pointer-events: none;
+            border-radius: 50%;
+            background: #ffe9b8;
+            animation: floatGlow 6s ease-in-out infinite;
+        }
+        @keyframes floatGlow {
+            0%, 100% { transform: translateY(0px); opacity: 0.25; }
+            50% { transform: translateY(-20px); opacity: 0.45; }
+        }
+
+        /* 第九张图模拟层 */
+        .ninth-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: var(--z-ui);
+            transition: opacity 0.45s ease;
+        }
+        .ninth-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .ninth-overlay img {
+            max-width: 85vw;
+            max-height: 85vh;
+            border-radius: 16px;
+            border: 6px solid rgba(255,255,255,0.9);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            background: white;
+        }
+
+        /* 中转界面层 */
+        .bridge-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,245,250,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: var(--z-overlay);
+            transition: opacity 0.6s ease;
+        }
+        .bridge-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .bridge-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bridge-card {
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 52px 50px;       /* 上下内边距增大 */
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 20px 40px rgba(150,100,180,0.2),
+                        0 0 0 1px rgba(255,255,255,0.5) inset;
+            max-width: 90vw;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.6s cubic-bezier(0.22,0.61,0.36,1), opacity 0.6s ease;
+            opacity: 0;
+        }
+        .bridge-overlay.show .bridge-card {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .bridge-title {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);   /* 标题字号缩小 */
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+        .bridge-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .bridge-btn {
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .bridge-btn:active { transform: scale(0.95); }
+        .bridge-btn-primary {
+            background: rgba(220,190,255,0.35);
+            color: #4a2b5e;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        .bridge-btn-skip {
+            background: rgba(255,255,255,0.5);
+            color: #8a5a9e;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        /* vs话13内容层 */
+        .whisper-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,245,250,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: var(--z-whisper);
+            transition: opacity 0.5s ease;
+        }
+        .whisper-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .whisper-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .whisper-card {
+            position: relative;
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 40px 45px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 20px 40px rgba(150,100,180,0.2),
+                        0 0 0 1px rgba(255,255,255,0.5) inset;
+            max-width: 500px;
+            width: 90vw;
+            transform: translateY(15px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        .whisper-overlay.show .whisper-card {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .whisper-title {
+            font-size: clamp(1.6rem, 5.5vw, 2.4rem);
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        .whisper-text {
+            font-size: clamp(1.05rem, 3.5vw, 1.45rem);
+            color: #4a2b5e;
+            line-height: 2.1;
+            letter-spacing: 1px;
+            text-align: left;
+            text-indent: 2em;
+            margin-bottom: 25px;
+            min-height: 8em;
+        }
+
+        .continue-hint {
+            font-size: 0.95rem;
+            color: #8a5a9e;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            animation: vsHintPulse 2s ease-in-out infinite;
+            cursor: default;
+        }
+        @keyframes vsHintPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* 看完了按钮 */
+        .done-btn {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: rgba(220,190,255,0.45);
+            color: #4a2b5e;
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .done-btn:active { transform: scale(0.95); }
+
+        /* 按钮出现动画 */
+        .done-btn-show {
+            animation: doneBtnIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes doneBtnIn {
+            0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .quit-whisper-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: rgba(255,200,200,0.6);
+            color: #4a2b5e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .quit-whisper-btn:active { transform: scale(0.95); }
+
+        /* 假结束占位层 */
+        .fake-ending-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,245,250,0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            z-index: var(--z-ending);
+            transition: opacity 0.6s ease;
+        }
+        .fake-ending-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fake-ending-card {
+            background: rgba(255,255,255,0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 40px 50px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 20px 40px rgba(150,100,180,0.2);
+            max-width: 90vw;
+        }
+        .fake-ending-title {
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+        .fake-ending-text {
+            font-size: 1rem;
+            color: #8a5a9e;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .bridge-card { padding: 40px 22px; }   /* 移动端上下内边距也增大 */
+            .whisper-card { padding: 30px 22px; }
+            .bridge-btn { padding: 12px 24px; font-size: 1rem; }
+            .done-btn { padding: 10px 30px; font-size: 1rem; }
+            .quit-whisper-btn { padding: 6px 12px; font-size: 0.8rem; }
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            position: relative;
+        }
+
+        /* 测试入口按钮 */
+        .test-trigger {
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            color: #4a2b5e;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(150, 100, 180, 0.2);
+            transition: transform 0.2s;
+            z-index: var(--z-ui);
+        }
+        .test-trigger:active { transform: scale(0.95); }
+
+        /* ========== 假结束界面 ========== */
+        .ending-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-whisper);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 245, 250, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease;
+        }
+        .ending-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .ending-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
+            padding: 40px 50px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(150, 100, 180, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            max-width: 90vw;
+            animation: endingCardIn 0.8s ease-out;
+        }
+        @keyframes endingCardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .ending-card::before {
+            content: '';
+            position: absolute;
+            top: 10%; left: 15%;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ffe9b8;
+            box-shadow: 0 0 10px #ffe9b8;
+            opacity: 0.5;
+            animation: floatGlowEgg 4s ease-in-out infinite;
+        }
+        .ending-card::after {
+            content: '';
+            position: absolute;
+            bottom: 15%; right: 20%;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #ffe9b8;
+            box-shadow: 0 0 8px #ffe9b8;
+            opacity: 0.4;
+            animation: floatGlowEgg 5s ease-in-out infinite reverse;
+        }
+        @keyframes floatGlowEgg {
+            0%, 100% { transform: translateY(0); opacity: 0.35; }
+            50% { transform: translateY(-10px); opacity: 0.6; }
+        }
+        .ending-title {
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            color: #4a2b5e;
+            font-weight: bold;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease-out 0.2s forwards;
+        }
+        .ending-btn-group {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.6s ease-out 0.6s forwards;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn-end {
+            padding: 14px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        .btn-end:active { transform: scale(0.95); }
+        .btn-restart {
+            background: rgba(220, 190, 255, 0.35);
+            color: #4a2b5e;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        .btn-egg {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 240, 210, 0.55);
+            color: #4a2b5e;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            font-family: 'Arial', sans-serif;
+            font-weight: 900;
+        }
+
+        /* 音乐控制按钮 */
+        .music-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: var(--z-whisper);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(150, 100, 180, 0.3);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .music-toggle:active { transform: scale(0.9); }
+        .headphone-hint-music {
+            position: fixed;
+            top: 26px; right: 80px;
+            z-index: var(--z-whisper);
+            background: white;
+            color: #4a2b5e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .headphone-hint-music::after {
+            content: '';
+            position: absolute;
+            top: 50%; right: -6px;
+            transform: translateY(-50%);
+            width: 0; height: 0;
+            border-left: 8px solid white;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+        .headphone-hint-music.show { opacity: 1; }
+
+        /* ========== 密码输入覆盖层 ========== */
+        .password-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-password);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        .password-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .password-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .password-box {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 30px;
+            padding: 30px 35px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.8);
+            width: 90vw;
+            max-width: 360px;
+            transform: translateY(20px) scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.5s ease;
+            opacity: 0;
+        }
+        .password-overlay.show .password-box {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .password-title {
+            font-size: 1.6rem;
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .password-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            border: 2px solid #e0c0ff;
+            border-radius: 20px;
+            outline: none;
+            font-family: inherit;
+            color: #4a2b5e;
+            background: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+            transition: border-color 0.2s;
+        }
+        .password-input:focus { border-color: #c44dff; }
+        .password-hint {
+            font-size: 0.8rem;
+            color: #8a5a9e;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .password-error {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            min-height: 1.2em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .password-btn {
+            padding: 10px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(220, 190, 255, 0.6);
+            color: #4a2b5e;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(150, 100, 180, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .password-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 6px rgba(150, 100, 180, 0.3);
+        }
+
+        /* 输入框抖动动画 */
+        .shake {
+            animation: shake 0.4s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        /* ========== 彩蛋黑屏 ========== */
+        .egg-black-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #000;
+            z-index: var(--z-ending);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            color: #fff;
+            user-select: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        .egg-black-screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .egg-black-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .egg-text {
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 20px;
+            max-width: 90vw;
+            white-space: pre-wrap;
+            will-change: transform, opacity;
+        }
+        .egg-text.big {
+            font-size: clamp(5rem, 15vw, 8rem);
+        }
+        .egg-text.normal {
+            font-size: clamp(1.4rem, 5vw, 2.2rem);
+        }
+        .egg-image {
+            font-size: clamp(8rem, 20vw, 12rem);
+            margin: 20px 0;
+            will-change: transform, opacity;
+        }
+
+        /* ========== 拼图游戏占位界面 ========== */
+        .game-placeholder {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            z-index: var(--z-puzzle);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        .game-placeholder.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .game-placeholder-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 40px 50px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(150, 100, 180, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            max-width: 90vw;
+        }
+        .game-placeholder-title {
+            font-size: clamp(2rem, 7vw, 3rem);
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+        .game-placeholder-text {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            color: #8a5a9e;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+            .ending-card { padding: 25px 20px; }
+            .btn-end { padding: 12px 24px; font-size: 1rem; }
+            .btn-egg { width: 50px; height: 50px; font-size: 1.6rem; }
+            .music-toggle { width: 42px; height: 42px; font-size: 1.2rem; top: 12px; right: 12px; }
+            .headphone-hint-music { top: 16px; right: 60px; font-size: 0.8rem; padding: 6px 12px; }
+            .egg-text { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+            .egg-text.big { font-size: clamp(4rem, 12vw, 6rem); }
+            .egg-text.normal { font-size: clamp(1.2rem, 4vw, 1.8rem); }
+            .egg-image { font-size: clamp(6rem, 15vw, 9rem); }
+            .password-box { padding: 20px 25px; }
+            .password-title { font-size: 1.4rem; }
+            .password-input { font-size: 1rem; }
+        }
+
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        /* 拼图磨砂玻璃矩形右上角的“不想玩了”按钮 */
+        .btn-quit {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: var(--z-ui);
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 20px;
+            background: #ff6b6b;
+            color: #fff;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-quit:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 6px rgba(255, 107, 107, 0.5);
+        }
+
+        .puzzle-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(150, 100, 180, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            width: 90vw;
+            max-width: 420px;
+        }
+
+        .puzzle-title {
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            color: #4a2b5e;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .puzzle-board {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: rgba(0,0,0,0.1);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .puzzle-tile {
+            position: absolute;
+            border-radius: 10px;
+            background-color: #fff;
+            background-image: var(--bg-image);
+            background-size: 300% 300%;
+            cursor: pointer;
+            transition: left 0.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+                        top 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .puzzle-tile.empty {
+            background: rgba(0,0,0,0.1);
+            background-image: none !important;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+            cursor: default;
+        }
+        .puzzle-tile.locked {
+            cursor: not-allowed;
+            filter: brightness(0.9);
+        }
+        .puzzle-tile:not(.empty):active {
+            filter: brightness(0.95);
+        }
+        .puzzle-tile.solved-highlight {
+            outline: 3px solid #ffd700;
+            outline-offset: -3px;
+        }
+
+        .pz-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+        .pz-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.8);
+            color: #4a2b5e;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pz-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+<!--        .pz-btn-author {-->
+<!--            background: rgba(220, 190, 255, 0.35);-->
+<!--        }-->
+        .pz-btn-change {
+            background: rgba(255, 240, 210, 0.55);
+        }
+
+        .pz-message {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #4a2b5e;
+            min-height: 1.5em;
+            letter-spacing: 1px;
+        }
+
+        .pz-btn-finished {
+            display: none;
+            margin: 15px auto 0;
+            padding: 14px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 40px;
+            background: linear-gradient(135deg, #ffe9b8, #ffb6c1);
+            color: #4a2b5e;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pz-btn-finished.show {
+            display: block;
+        }
+        .pz-btn-finished:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .code-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: var(--z-overlay);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInModal 0.3s ease;
+        }
+        .code-modal.show {
+            display: flex;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .code-modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 30px;
+            padding: 30px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.8);
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .code-modal-text {
+            font-size: 1.5rem;
+            color: #4a2b5e;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .code-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .code-modal-btn {
+            padding: 10px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            font-family: inherit;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .code-modal-btn:active { transform: scale(0.95); }
+        .code-modal-continue {
+            background: rgba(220, 190, 255, 0.35);
+            color: #4a2b5e;
+            box-shadow: 0 4px 10px rgba(150, 100, 180, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        .code-modal-close {
+            background: rgba(255, 200, 200, 0.55);
+            color: #4a2b5e;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 600px) {
+            .puzzle-container { padding: 20px; border-radius: 30px; }
+            .pz-btn { padding: 10px 18px; font-size: 0.9rem; }
+            .btn-quit { top: 12px; right: 12px; padding: 10px 18px; font-size: 0.95rem; }
+            .code-modal-content { padding: 20px 25px; }
+        }
+
+
+        /* ========== 拼图覆盖层 ========== */
+        .puzzle-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-puzzle);
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(145deg, #ffe0f0 0%, #e6d0ff 50%, #c8e0ff 100%);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        .puzzle-overlay.show { opacity: 1; pointer-events: auto; }
+
+
+        /* ========== 拼图音乐开关 ========== */
+        .puzzle-music-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: var(--z-puzzle-music);
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(150,100,180,0.3);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .puzzle-music-toggle:active { transform: scale(0.9); }
+        @media (max-width: 600px) {
+            .puzzle-music-toggle { width: 42px; height: 42px; font-size: 1.2rem; top: 12px; right: 12px; }
+        }
+
+        /* ========== 谢幕覆盖层 ========== */
+        .credits-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-lightbox);
+            background: #000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 1.2s ease;
+        }
+        .credits-overlay { display: none; }
+        .credits-overlay.show { display: flex; opacity: 1; pointer-events: auto; }
+
+        body {
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', sans-serif;
+            position: relative;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .credits-stage {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #0d0d0d 0%, #000000 70%);
+        }
+
+        .credits-content {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 90vw; max-width: 700px;
+            will-change: transform;
+            text-align: center;
+            visibility: hidden;
+        }
+        .credits-content.ready { visibility: visible; }
+
+        .credit-block {
+            padding-bottom: 22vh;
+        }
+
+        .credit-line {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .credit-section-title {
+            font-size: clamp(1.4rem, 4.5vw, 2rem);
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 5px;
+            margin-bottom: 35px;
+            font-weight: bold;
+        }
+
+        .credit-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        /* 普通鸣谢项：带图片 */
+        .credit-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .credit-item span {
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 3px;
+            white-space: nowrap;
+        }
+
+        .credit-item img {
+            width: auto;
+            max-width: 120px;
+            max-height: 80px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        /* 搞怪鸣谢项：纯文字，无图片，横向纵向间距都增大 */
+        .credit-text-item {
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 6px;          /* 横向字间距增大 */
+            margin-bottom: 40px;           /* 纵向间距 */
+            padding: 0 24px;               /* 横向内边距增大 */
+        }
+
+        .credit-birthday {
+            font-size: clamp(1.8rem, 5.5vw, 2.8rem);
+            color: #ffd700;
+            font-weight: bold;
+            letter-spacing: 6px;
+            margin-top: 35px;
+            margin-bottom: 45px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .credit-end {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: bold;
+            letter-spacing: 8px;
+            margin-top: 50px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .action-btn:hover { background: rgba(255, 255, 255, 0.25); }
+        .action-btn:active { transform: scale(0.96); }
+
+        .quit-top-btn {
+            position: fixed;
+            top: 24px; right: 40px;
+            z-index: var(--z-ui);
+            display: none;
+        }
+        .quit-top-btn.show { display: block; }
+
+        .hint-text {
+            position: fixed;
+            bottom: 8vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            z-index: var(--z-ui);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .hint-text.show { display: block; }
+        .hint-text:hover { background: rgba(255, 255, 255, 0.25); }
+        .hint-text:active { transform: scale(0.96); }
+
+        @media (max-width: 600px) {
+            .credits-content { width: 92vw; }
+            .credit-line { margin-bottom: 22px; }
+            .credit-item { gap: 15px; margin-bottom: 20px; }
+            .credit-item img { max-width: 90px; max-height: 60px; }
+            .credit-text-item {
+                font-size: 1rem;
+                margin-bottom: 30px;
+                letter-spacing: 5px;   /* 移动端字间距也增大 */
+                padding: 0 16px;        /* 移动端横向内边距 */
+            }
+            .action-btn,
+            .hint-text { padding: 12px 24px; font-size: 1rem; }
+            .quit-top-btn { top: 16px; right: 20px; }
+        }
+
+        /* ========== 19→20 过场动画 ========== */
+        .age-transition {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: var(--z-modal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #c8e0ff 0%, #e6d0ff 40%, #ffe0f0 100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+        .age-transition.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .age-bg-cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .age-balloon {
+            position: absolute;
+            bottom: -200px;
+            width: 50px;
+            pointer-events: none;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+        }
+        .age-balloon::before {
+            content: '';
+            display: block;
+            width: 50px; height: 70px;
+            border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+            position: relative;
+            z-index: 2;
+        }
+        .age-balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 12px solid;
+            border-top-color: inherit;
+            z-index: 1;
+        }
+        .age-balloon .balloon-string {
+            position: absolute;
+            top: 100%; left: 50%;
+            width: 1px; height: 160px;
+            background: rgba(100,100,100,0.35);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        .age-big-number {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30vw;
+            font-weight: bold;
+            color: #ff6b9d;
+            font-family: 'Times New Roman', serif;
+            text-shadow: 0 0 40px rgba(255,107,157,0.4);
+            user-select: none;
+            z-index: 10;
+            will-change: transform, opacity;
+        }
+        .age-float-away {
+            animation: ageFloatAway 2s ease-in forwards;
+        }
+        @keyframes ageFloatAway {
+            0% { transform: translate(-50%, -50%); opacity: 1; }
+            100% { transform: translate(-50%, -200vh); opacity: 0; }
+        }
+        .age-thin-line {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            height: 2px; width: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,107,157,0.6) 50%, transparent);
+            box-shadow: 0 0 15px rgba(255,107,157,0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .age-thin-line.show {
+            animation: ageLineAppear 0.8s ease-out forwards;
+        }
+        @keyframes ageLineAppear {
+            0% { width: 0; opacity: 0; }
+            100% { width: 50vw; opacity: 1; }
+        }
+        .age-drop-down {
+            animation: ageDropDown 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes ageDropDown {
+            0% { transform: translate(-50%, -150%); opacity: 0; }
+            60% { transform: translate(-50%, -40%); opacity: 1; }
+            80% { transform: translate(-50%, -55%); opacity: 1; }
+            100% { transform: translate(-50%, -50%); opacity: 1; }
+        }
+        .age-countdown {
+            position: absolute;
+            top: calc(50% + 18vw);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: rgba(255, 107, 157, 0.5);
+            letter-spacing: 4px;
+            font-weight: bold;
+            font-family: 'KaiTi', 'STKaiti', 'Microsoft YaHei', serif;
+            z-index: 12;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+        .age-countdown.show { opacity: 1; }
+        .age-countdown-number {
+            display: inline-block;
+            min-width: 1em;
+            text-align: center;
+            font-size: 1.4em;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .age-countdown-number.tick {
+            animation: ageCountdownTick 0.5s ease-out;
+        }
+        @keyframes ageCountdownTick {
+            0% { transform: scale(1.5); opacity: 0.3; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .age-fade-out {
+            animation: ageFadeOut 2.5s ease-in forwards;
+        }
+        .age-glow-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px; height: 200px;
+            border: 4px solid #ff6b9d;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 6;
+        }
+        .age-glow-ring.show {
+            animation: ageRingExpand 1.5s ease-out forwards;
+        }
+        @keyframes ageRingExpand {
+            0% { width: 100px; height: 100px; opacity: 1; border-width: 8px; }
+            100% { width: 600px; height: 600px; opacity: 0; border-width: 1px; }
+        }
+        .age-banner {
+            position: absolute; top: 20%; left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 4px 10px rgba(255,107,157,0.6), 2px 2px 0 #ff6b9d;
+            white-space: nowrap;
+            opacity: 0;
+            z-index: 12;
+        }
+        .age-banner.show {
+            animation: ageBannerIn 1s ease-out forwards;
+        }
+        @keyframes ageBannerIn {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(0.5); }
+            60% { opacity: 1; transform: translateX(-50%) translateY(10px) scale(1.1); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+        .age-confetti {
+            position: absolute;
+            width: 8px; height: 14px;
+            pointer-events: none;
+        }
+        @keyframes ageFadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* 移动端 */
+        @media (max-width: 600px) {
+            .age-big-number { font-size: 38vw; }
+            .age-thin-line.show { width: 70vw; }
+            .age-countdown { top: calc(50% + 24vw); }
+        }
+
+        /* ========== 结尾全屏背景图 (“不听了”后渐入) ========== */
+        .end-bg {
+            position: fixed;
+            inset: 0;
+            background-color: #000;
+            background-image: url('https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E5%B0%BE%E5%9B%BE.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+            z-index: 99999;
+        }
+        .end-bg.show {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 信封覆盖层 -->
+    <div class="envelope-overlay" id="envelopeOverlay">
+        <div class="envelope-body"></div>
+        <div class="envelope-flap-bottom"></div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-text">美女亲启</div>
+        <div class="headphone-hint-envelope">建议配合耳机食用 🎧</div>
+        <div class="stamp" id="stamp">拆</div>
+    </div>
+
+    <!-- 许愿覆盖层 -->
+    <div class="wish-overlay" id="wishOverlay">
+        <div class="cake-glow"></div>
+        <div class="cake-container">
+            <div class="cake-layer-bottom">
+                <div class="cake-layer-top">
+                    <div class="cream-dots">
+                        <div class="cream-dot"></div>
+                        <div class="cream-dot"></div>
+                        <div class="cream-dot"></div>
+                        <div class="cream-dot"></div>
+                        <div class="cream-dot"></div>
+                    </div>
+                    <div class="cherry"></div>
+                </div>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame-glow"></div>
+                    <div class="flame-main"></div>
+                    <div class="smoke"></div>
+                </div>
+            </div>
+            <div class="plate"></div>
+        </div>
+
+        <div class="wish-text" id="wishText">许个愿望吧</div>
+        <div class="ps-hint">ps:20根蜡烛就省了</div>
+
+        <!-- 开始许愿按钮 -->
+        <button class="btn" id="actionBtn">开始许愿</button>
+
+        <!-- 开灯按钮（初始隐藏） -->
+        <button class="light-on-btn" id="lightOnBtn">💡 开灯</button>
+    </div>
+
+    <!-- go on 箭头 -->
+    <div class="go-on-arrow" id="goOnArrow">
+        ➤
+        <span>go on</span>
+    </div>
+
+    <!-- ========== 19→20 过场动画 ========== -->
+    <div class="age-transition" id="ageTransition">
+        <div class="age-thin-line" id="ageThinLine"></div>
+        <div class="age-glow-ring" id="ageGlowRing"></div>
+        <div class="age-banner" id="ageBanner">🎈 20岁生日快乐 🎈</div>
+        <div class="age-big-number" id="ageBigNumber">19</div>
+        <div class="age-countdown" id="ageCountdown">
+            <span class="age-countdown-number" id="ageCountdownNumber">3</span>
+        </div>
+    </div>
+
+    <!-- 许愿环节音乐按钮 -->
+    <div class="wish-music-toggle" id="wishMusicToggle" style="display:none;">🎵</div>
+    <div class="wish-headphone-hint" id="wishHeadphoneHint">建议配合耳机食用 🎧</div>
+
+    <!-- 音频 -->
+    <!--    生日歌2-->
+    <audio id="wishSong" src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%9F%B3%E4%B9%90/%E7%94%9F%E6%97%A5%E6%AD%8C2.mp3" loop preload="auto"></audio>
+    <!--    城市生活浪漫进行曲-->
+    <audio id="bgm" src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E5%9F%8E%E5%B8%82%E7%94%9F%E6%B4%BB%E6%B5%AA%E6%BC%AB%E6%B5%81%E8%A1%8C%E6%9B%B2-%E6%B5%AA%E6%BC%AB%E6%8A%92%E6%83%85-%E6%9A%97%E6%81%8B%E6%97%A5%E8%AE%B0_%E7%88%B1%E7%BB%99%E7%BD%91_aigei_com.mp3" loop preload="auto"></audio>
+
+    <!-- ========== 主内容（dg） ========== -->
+    <div class="page-content" id="pageContent">
+        <div class="card" id="card">
+            <h1>🎂 张可心生日快乐 🎂</h1>
+            <div class="cake" id="cake">🎂</div>
+            <p class="hint" id="hint">点击蛋糕，发现惊喜 🎁</p>
+            <p class="message">
+                愿美好如期而至，快乐不止生日<br />
+                愿你永远 <span class="highlight">热烈</span>、<span class="highlight">自信</span>、<span class="highlight">闪闪发光</span> ✨
+            </p>
+            <p class="signature">—— 送给世界上最特别的你 🎈</p>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <img id="lightboxImg" src="" alt="放大的照片">
+    </div>
+
+    <div class="music-toggle" id="musicToggle" style="display:none;">🎵</div>
+    <div class="headphone-hint-music" id="headphoneHintMusic">建议配合耳机食用 🎧</div>
+
+    <!-- ========== vs话：中转界面层（预进入） ========== -->
+    <div class="bridge-overlay" id="bridgeOverlay">
+        <div class="bridge-card">
+            <div class="bridge-title">有两句小声哔哔</div>
+            <div class="bridge-btns">
+                <button class="bridge-btn bridge-btn-primary" id="watchBtn">我看看</button>
+                <button class="bridge-btn bridge-btn-skip" id="skipBtn">不想看跳过</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== vs话：内容层 ========== -->
+    <div class="whisper-overlay" id="whisperOverlay">
+        <div class="whisper-card" id="whisperCard">
+            <button class="quit-whisper-btn" id="quitWhisperBtn">不想看了</button>
+            <div class="whisper-title">小声哔哔</div>
+            <div class="whisper-text" id="whisperText"></div>
+            <div class="continue-hint" id="continueHint">点击屏幕继续</div>
+            <button class="done-btn" id="doneBtn" style="display:none;">看完了</button>
+        </div>
+    </div>
+
+    <!-- ========== pre：假结束界面 ========== -->
+    <div class="ending-overlay" id="endingOverlay">
+        <div class="ending-card">
+            <div class="ending-title">本次生日体验已结束</div>
+            <div class="ending-btn-group">
+                <button class="btn-end btn-restart" id="endingRestartBtn">重新开始</button>
+                <button class="btn-end btn-egg" id="eggBtn">？</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== pre：密码输入覆盖层 ========== -->
+    <div class="password-overlay" id="passwordOverlay">
+        <div class="password-box">
+            <div class="password-title">请输入密码</div>
+            <input class="password-input" id="passwordInput" type="text" placeholder="请输入密码" />
+            <div class="password-hint">提示，密码你猜</div>
+            <div class="password-error" id="passwordError"></div>
+            <button class="password-btn" id="passwordBtn">确定</button>
+        </div>
+    </div>
+
+    <!-- ========== pre：彩蛋黑屏 ========== -->
+    <div class="egg-black-screen" id="eggBlackScreen">
+        <div id="eggDisplay"></div>
+    </div>
+
+    <!-- ========== yx：拼图游戏 ========== -->
+    <div class="puzzle-overlay" id="puzzleOverlay">
+        <button class="puzzle-music-toggle" id="puzzleMusicToggle">🎵</button>
+        <div class="puzzle-container">
+            <button class="btn-quit" id="quitBtn">不想玩了</button>
+            <h1 class="puzzle-title">拼图</h1>
+            <div class="puzzle-board" id="puzzleBoard"></div>
+            <div class="pz-btn-group">
+                <button class="pz-btn" id="shuffleBtn">打乱拼图</button>
+                <button class="pz-btn pz-btn-change" id="changeBtn">换一张</button>
+                <button class="pz-btn" id="puzzleRestartBtn">重新开始</button>
+                <!-- <button class="pz-btn pz-btn-author" id="authorBtn">通道</button> -->
+            </div>
+            <div class="pz-message" id="puzzleMessage">点击“打乱拼图”开始</div>
+            <button class="pz-btn-finished" id="finishedBtn">我拼完啦</button>
+        </div>
+        <div class="code-modal" id="codeModal">
+            <div class="code-modal-content">
+                <div class="code-modal-text">兑换码：ds15a2d</div>
+                <div class="code-modal-buttons">
+                    <button class="code-modal-btn code-modal-continue" id="codeModalContinue">不玩了继续</button>
+                    <button class="code-modal-btn code-modal-close" id="codeModalClose">再玩一次</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 谢幕环节 ========== -->
+    <div class="credits-overlay" id="creditsOverlay">
+
+    <div class="credits-stage" id="creditsStage">
+        <div class="credits-content" id="creditsContent">
+            <div class="credit-block" id="creditBlock1">
+                <div class="credit-line">编剧：某人</div>
+                <div class="credit-line">导演：某人</div>
+                <div class="credit-line">主演：张可心</div>
+                <div class="credit-line">彩蛋：真的很会点哎</div>
+                <div class="credit-line">感谢每一个点击</div>
+                <div class="credit-line">感谢完整观看</div>
+                <div class="credit-section-title">鸣谢：</div>
+
+                <div class="credit-list">
+                    <!-- 原有带图鸣谢项 -->
+                    <div class="credit-item">
+                        <span>张可心</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E5%BC%A0%E5%8F%AF%E5%BF%83.jpg" alt="张可心">
+                    </div>
+                    <div class="credit-item">
+                        <span>minimax</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/minimax.jpg" alt="minimax">
+                    </div>
+                    <div class="credit-item">
+                        <span>腾讯云</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E8%85%BE%E8%AE%AF%E4%BA%91.jpg" alt="腾讯云">
+                    </div>
+                    <div class="credit-item">
+                        <span>周杰伦</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg" alt="周杰伦">
+                    </div>
+                    <div class="credit-item">
+                        <span>github</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/github.jpg" alt="github">
+                    </div>
+                    <div class="credit-item">
+                        <span>aeroray</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/aeroray.jpg" alt="aeroray">
+                    </div>
+                    <div class="credit-item">
+                        <span>理刃科技</span>
+                        <img src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E7%90%86%E5%88%83%E7%A7%91%E6%8A%80.jpg" alt="理刃科技">
+                    </div>
+
+                    <!-- 搞怪鸣谢项：横向纵向间距都增大 -->
+                    <div class="credit-text-item">手   机</div>
+                    <div class="credit-text-item">电   脑</div>
+                    <div class="credit-text-item">鼠   标</div>
+                    <div class="credit-text-item">键   盘</div>
+                    <div class="credit-text-item">风   扇</div>
+                    <div class="credit-text-item">空   调</div>
+                    <div class="credit-text-item">桌   子</div>
+                    <div class="credit-text-item">闪   购</div>
+                </div>
+
+                <div class="credit-birthday">生日快乐！</div>
+                <div class="credit-end">完</div>
+            </div>
+            <div class="credit-block" id="creditBlock2"></div>
+        </div>
+    </div>
+
+    <button class="action-btn quit-top-btn" id="quitTopBtn">不听了</button>
+    <div class="hint-text" id="creditsContinueHint">还想继续听歌</div>
+
+        </div>
+<!--   晴天-->
+    <audio id="creditsBgm" src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%9F%B3%E4%B9%90/%E5%91%A8%E6%9D%B0%E4%BC%A6%20-%20%E6%99%B4%E5%A4%A9.mp3" loop preload="auto"></audio>
+<!--    LIKPIA - 夏Style-->
+    <audio id="puzzleBgm" src="https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%9F%B3%E4%B9%90/LIKPIA%20-%20%E5%A4%8FStyle.mp3" loop preload="auto"></audio>
+
+    <script>
+        (function() {
+            window.isAnimating = false;
+
+            // 背景光点
+            const isMobile = window.innerWidth <= 600;
+            const dotCount = isMobile ? 15 : 30;
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'glow-dot';
+                const size = Math.random() * 6 + 4;
+                dot.style.width = size + 'px';
+                dot.style.height = size + 'px';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.top = Math.random() * 100 + '%';
+                dot.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                dot.style.animationDelay = (Math.random() * 4) + 's';
+                dot.style.opacity = Math.random() * 0.2 + 0.25;
+                document.body.appendChild(dot);
+            }
+
+            const bgm = document.getElementById('bgm');
+            const wishSong = document.getElementById('wishSong');
+            const wishMusicToggle = document.getElementById('wishMusicToggle');
+            const wishHeadphoneHint = document.getElementById('wishHeadphoneHint');
+            const envelopeOverlay = document.getElementById('envelopeOverlay');
+            const stamp = document.getElementById('stamp');
+                        /* ---- Module.Fm ---- */
+const wishOverlay = document.getElementById('wishOverlay');
+            const wishText = document.getElementById('wishText');
+            const actionBtn = document.getElementById('actionBtn');
+            const lightOnBtn = document.getElementById('lightOnBtn');
+            const goOnArrow = document.getElementById('goOnArrow');
+
+            let wishStep = 'initial';
+            let hasBlown = false;
+            let wishActive = false;
+            let wishHintTimer = null;
+            let wishSongStarted = false;
+
+            bgm.volume = 0;
+            wishSong.volume = 0;
+
+            function fadeInMusic(audio, targetVolume, duration) {
+                const step = 0.02;
+                const interval = Math.max(10, duration / (targetVolume / step));
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= targetVolume) {
+                        audio.volume = targetVolume;
+                        clearInterval(timer);
+                    } else {
+                        audio.volume = current;
+                    }
+                }, interval);
+            }
+
+            function fadeOutMusic(audio, duration) {
+                const step = 0.02;
+                const interval = Math.max(10, duration / (audio.volume / step));
+                const timer = setInterval(() => {
+                    if (audio.volume > step) {
+                        audio.volume -= step;
+                    } else {
+                        audio.volume = 0;
+                        clearInterval(timer);
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }
+                }, interval);
+            }
+
+            const AudioUtil = { fadeIn: fadeInMusic, fadeOut: fadeOutMusic };
+
+            function showWishMusicHint() {
+                wishHeadphoneHint.classList.add('show');
+                clearTimeout(wishHintTimer);
+                wishHintTimer = setTimeout(() => wishHeadphoneHint.classList.remove('show'), 5000);
+            }
+
+            wishMusicToggle.addEventListener('click', function() {
+                wishHeadphoneHint.classList.remove('show');
+                clearTimeout(wishHintTimer);
+                if (wishSong.paused) {
+                    wishSong.play().then(() => {
+                        fadeInMusic(wishSong, 0.5, 1000);
+                        wishMusicToggle.textContent = '🔊';
+                    });
+                } else {
+                    wishSong.pause();
+                    wishMusicToggle.textContent = '🔇';
+                }
+            });
+
+            // 拆信封
+            stamp.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (isAnimating) return;
+                isAnimating = true;
+                stamp.style.transform = 'translate(-50%, -50%) rotate(-15deg) scale(0.85)';
+                setTimeout(() => stamp.style.transform = 'translate(-50%, -50%) rotate(-15deg) scale(1)', 150);
+                envelopeOverlay.classList.add('animate-split');
+                setTimeout(() => {
+                    envelopeOverlay.style.display = 'none';
+                    wishOverlay.classList.add('active');
+                    wishActive = true;
+                    wishMusicToggle.style.display = 'flex';
+                    wishSong.volume = 0;
+                    wishSong.play().then(() => {
+                        wishSongStarted = true;
+                        fadeInMusic(wishSong, 0.5, 2000);
+                        wishMusicToggle.textContent = '🔊';
+                        showWishMusicHint();
+                    }).catch(err => {
+                        console.warn('生日快乐歌播放失败:', err);
+                        wishMusicToggle.textContent = '音乐加载失败';
+                        wishMusicToggle.style.color = '#ff6666';
+                    });
+                    isAnimating = false;
+                }, 900);
+            });
+
+            // 许愿按钮状态机
+            actionBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (wishStep === 'initial') {
+                    wishStep = 'praying';
+                    wishText.textContent = '许愿中……';
+                    actionBtn.textContent = '要认真许愿哦';
+                    actionBtn.classList.add('praying');
+                    actionBtn.disabled = true;
+
+                    setTimeout(() => {
+                        wishStep = 'done';
+                        actionBtn.textContent = '我许好啦';
+                        actionBtn.classList.remove('praying');
+                        actionBtn.disabled = false;
+                    }, 5000);
+                } else if (wishStep === 'done') {
+                    wishStep = 'blow';
+                    wishText.textContent = '祝你愿望成真哦';
+                    actionBtn.textContent = '吹赛博蜡烛';
+                } else if (wishStep === 'blow') {
+                    wishStep = 'ended';
+                    hasBlown = true;
+
+                    actionBtn.classList.add('btn-fade-out');
+                    setTimeout(() => {
+                        actionBtn.style.display = 'none';
+                    }, 400);
+
+                    wishOverlay.classList.add('blown');
+
+                    setTimeout(() => createSequentialFireworks(5), 500);
+                }
+            });
+
+            // 开灯按钮
+            lightOnBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                lightOnBtn.classList.remove('show');
+                wishOverlay.classList.remove('lights-off');
+                wishOverlay.classList.add('lights-on');
+                setTimeout(() => {
+                    goOnArrow.classList.add('show');
+                }, 1200);
+            });
+
+            // 礼炮结束后，等待2秒显示开灯按钮
+            function createSequentialFireworks(count) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        createFirework(i);
+                        if (i === count - 1) {
+                            setTimeout(() => {
+                                lightOnBtn.classList.add('show');
+                            }, 2000);
+                        }
+                    }, i * 800);
+                }
+            }
+
+            function createFirework(index) {
+                const colors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#1dd1a1','#f368e0','#ffb347','#ff4757','#ffd700','#ff7f50'];
+                const directions = [{x:0.15,y:0.2},{x:0.85,y:0.2},{x:0.15,y:0.8},{x:0.85,y:0.8},{x:0.5,y:0.5}];
+                const dir = directions[index % directions.length];
+                const centerX = window.innerWidth * dir.x;
+                const centerY = window.innerHeight * dir.y;
+
+                for (let j=0; j<40; j++) {
+                    const ribbon = document.createElement('div');
+                    ribbon.style.position='fixed';
+                    ribbon.style.left=centerX+'px';
+                    ribbon.style.top=centerY+'px';
+                    ribbon.style.width=(Math.random()*20+10)+'px';
+                    ribbon.style.height=(Math.random()*4+2)+'px';
+                    ribbon.style.borderRadius='5px';
+                    ribbon.style.pointerEvents='none';
+                    ribbon.style.zIndex='10020';
+                    ribbon.style.background=colors[Math.floor(Math.random()*colors.length)];
+                    ribbon.style.boxShadow='0 0 8px rgba(255,255,255,0.7)';
+                    ribbon.style.transform='rotate('+(Math.random()*360)+'deg)';
+                    ribbon.style.transition='all 2.5s cubic-bezier(0.2,0.8,0.4,1)';
+                    ribbon.style.opacity='1';
+                    document.body.appendChild(ribbon);
+                    const angle=Math.random()*Math.PI*2;
+                    const distance=Math.random()*350+100;
+                    const dx=Math.cos(angle)*distance;
+                    const dy=Math.sin(angle)*distance-150;
+                    requestAnimationFrame(() => {
+                        ribbon.style.transform=`translate(${dx}px, ${dy}px) rotate(${Math.random()*720}deg)`;
+                        ribbon.style.opacity='0.9';
+                    });
+                    setTimeout(() => { ribbon.style.opacity='0'; setTimeout(()=>ribbon.remove(),500); },2500);
+                }
+            }
+
+            // go on 点击后进入主界面（此处占位）
+            goOnArrow.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!wishActive) return;
+                if (!goOnArrow.classList.contains('show')) return;
+                goOnArrow.classList.remove('show');
+                wishMusicToggle.style.display = 'none';
+                wishHeadphoneHint.classList.remove('show');
+                fadeOutMusic(wishSong, 1000);
+                // 触发 19→20 过场动画,动画结束后再进入主界面
+                startAgeTransition();
+            });
+
+            // ========== 19→20 过场动画 ==========
+            const ageTransition = document.getElementById('ageTransition');
+            const ageThinLine = document.getElementById('ageThinLine');
+            const ageGlowRing = document.getElementById('ageGlowRing');
+            const ageBigNumber = document.getElementById('ageBigNumber');
+            const ageBanner = document.getElementById('ageBanner');
+            const ageCountdown = document.getElementById('ageCountdown');
+            const ageCountdownNumber = document.getElementById('ageCountdownNumber');
+
+            const balloonColors = ['#ff6b9d', '#ffd700', '#c8e0ff', '#e6d0ff', '#ff8c42', '#9b59b6', '#e91e63'];
+            const ageTransitionFloatStyle = document.createElement('style');
+            ageTransitionFloatStyle.textContent = '@keyframes ageFloatUp{0%{bottom:-200px;transform:translateX(0) rotate(0deg);opacity:0}10%{opacity:1}50%{transform:translateX(30px) rotate(5deg)}100%{bottom:120vh;transform:translateX(-20px) rotate(-3deg);opacity:0.8}}';
+            document.head.appendChild(ageTransitionFloatStyle);
+
+            function createAgeBalloon(x, color) {
+                const b = document.createElement('div');
+                b.className = 'age-balloon';
+                b.style.cssText = 'left:' + x + 'px;color:' + color + ';animation:ageFloatUp 5s ease-out forwards';
+                b.innerHTML = '<div class="balloon-string"></div>';
+                const sheet = document.createElement('style');
+                sheet.textContent = '.age-balloon[style*="left:' + x + 'px"]::before{background:' + color + ';}';
+                document.head.appendChild(sheet);
+                ageTransition.appendChild(b);
+            }
+
+            function createAgeBackgroundClouds() {
+                for (let i = 0; i < 5; i++) {
+                    const c = document.createElement('div');
+                    c.className = 'age-bg-cloud';
+                    const size = 80 + Math.random() * 100;
+                    c.style.cssText = 'left:' + (Math.random() * window.innerWidth) + 'px;top:' + (Math.random() * window.innerHeight * 0.5) + 'px;width:' + size + 'px;height:' + (size * 0.5) + 'px;opacity:0.5';
+                    ageTransition.appendChild(c);
+                }
+            }
+
+            function runAgeCountdown(seconds) {
+                return new Promise(resolve => {
+                    ageCountdown.classList.add('show');
+                    ageCountdownNumber.textContent = String(seconds);
+                    let left = seconds;
+                    const tick = setInterval(() => {
+                        left--;
+                        if (left <= 0) {
+                            clearInterval(tick);
+                            ageCountdown.classList.remove('show');
+                            setTimeout(resolve, 400);
+                            return;
+                        }
+                        ageCountdownNumber.classList.remove('tick');
+                        void ageCountdownNumber.offsetWidth;
+                        ageCountdownNumber.textContent = String(left);
+                        ageCountdownNumber.classList.add('tick');
+                    }, 1000);
+                });
+            }
+
+            function ageConfetti() {
+                for (let i = 0; i < 40; i++) {
+                    const c = document.createElement('div');
+                    c.className = 'age-confetti';
+                    c.style.cssText = 'left:' + (Math.random() * window.innerWidth) + 'px;top:-20px;background:' + balloonColors[Math.floor(Math.random() * balloonColors.length)] + ';transform:rotate(' + (Math.random() * 360) + 'deg);transition:all ' + (2 + Math.random() * 2) + 's ease-in';
+                    ageTransition.appendChild(c);
+                    requestAnimationFrame(() => {
+                        c.style.top = (window.innerHeight + 50) + 'px';
+                        c.style.transform = 'rotate(' + (Math.random() * 720) + 'deg) translateX(' + ((Math.random() - 0.5) * 200) + 'px)';
+                        c.style.opacity = '0';
+                    });
+                    setTimeout(() => c.remove(), 4000);
+                }
+            }
+
+            function startAgeTransition() {
+                wishActive = false;
+                wishOverlay.classList.remove('active');
+                // 重置
+                ageBanner.classList.remove('show');
+                ageGlowRing.classList.remove('show');
+                ageBigNumber.classList.remove('age-float-away', 'age-drop-down');
+                ageBigNumber.textContent = '19';
+                ageTransition.querySelectorAll('.age-balloon, .age-bg-cloud, .age-confetti').forEach(e => e.remove());
+                // 显示过场层
+                ageTransition.style.display = 'flex';
+                requestAnimationFrame(() => ageTransition.classList.add('active'));
+                createAgeBackgroundClouds();
+
+                setTimeout(async () => {
+                    // 阶段1: 气球升空 (1.6s 内陆续)
+                    for (let i = 0; i < 25; i++) {
+                        setTimeout(() => {
+                            const x = Math.random() * window.innerWidth;
+                            const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                            createAgeBalloon(x, color);
+                        }, i * 80);
+                    }
+                    await new Promise(r => setTimeout(r, 1500));
+
+                    // 阶段2: 19 跟着气球飘走
+                    ageBigNumber.classList.add('age-float-away');
+                    await new Promise(r => setTimeout(r, 2200));
+
+                    // 阶段3: 圆环出现
+                    ageGlowRing.classList.add('show');
+
+                    // 阶段4: 20 drop-down 弹出 (与 balloon.html 一致)
+                    ageBigNumber.classList.remove('age-float-away');
+                    void ageBigNumber.offsetWidth;
+                    ageBigNumber.textContent = '20';
+                    ageBigNumber.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                    ageBigNumber.style.transition = 'all 0.3s';
+                    ageBigNumber.style.opacity = '0';
+
+                    await new Promise(r => setTimeout(r, 200));
+                    ageBigNumber.classList.add('age-drop-down');
+
+                    await new Promise(r => setTimeout(r, 800));
+
+                    // 阶段5: 横幅 + 纸屑 (与 balloon.html 一致)
+                    ageBanner.classList.add('show');
+                    ageConfetti();
+
+                    // 阶段6: 3 秒倒计时 (新加的)
+                    await runAgeCountdown(3);
+
+                    // 阶段7: 过场层轻柔淡出 (2.5s, 新加的)
+                    ageTransition.classList.add('age-fade-out');
+                    await new Promise(r => setTimeout(r, 2600));
+
+                    // 阶段8: 清理,进入主界面
+                    ageTransition.classList.remove('active');
+                    ageTransition.style.display = 'none';
+                    ageTransition.querySelectorAll('.age-balloon,.age-bg-cloud,.age-confetti').forEach(e => e.remove());
+                    ageThinLine.classList.remove('show');
+                    ageGlowRing.classList.remove('show');
+                    ageBigNumber.classList.remove('age-drop-down','age-float-away','age-fade-out');
+                    ageCountdown.classList.remove('show');
+                    ageBanner.classList.remove('show');
+
+                    pageContent.classList.add('active');
+                    musicToggle.style.display = 'flex';
+                    startBGM();
+                    showMusicHint();
+                }, 200);
+            }
+
+            // ========== 主界面音乐（dg） ==========
+            const pageContent = document.getElementById('pageContent');
+            const musicToggle = document.getElementById('musicToggle');
+            const headphoneHintMusic = document.getElementById('headphoneHintMusic');
+            let musicStarted = false;
+            let hintTimer = null;
+
+            /* ---- Module.Dg ---- */
+            function startBGM() {
+                if (!musicStarted) {
+                    bgm.play().then(() => {
+                        musicStarted = true;
+                        fadeInMusic(bgm, 0.5, 2000);
+                        musicToggle.textContent = '🎵';
+                    }).catch(err => console.warn('BGM播放失败:', err));
+                } else if (bgm.paused) {
+                    bgm.play();
+                    fadeInMusic(bgm, 0.5, 1000);
+                    musicToggle.textContent = '🎵';
+                }
+            }
+
+            function pauseBGM() {
+                bgm.pause();
+                musicToggle.textContent = '🔇';
+            }
+
+            function showMusicHint() {
+                headphoneHintMusic.classList.add('show');
+                clearTimeout(hintTimer);
+                hintTimer = setTimeout(() => headphoneHintMusic.classList.remove('show'), 5000);
+            }
+
+            musicToggle.addEventListener('click', function() {
+                headphoneHintMusic.classList.remove('show');
+                clearTimeout(hintTimer);
+                if (bgm.paused) startBGM(); else pauseBGM();
+            });
+
+            // ========== 五彩纸屑 ==========
+            const confettiColors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#1dd1a1','#f368e0'];
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size * (Math.random() * 0.8 + 0.4) + 'px';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = (Math.random() * 3) + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+            }
+
+            // ========== 浮动气球 ==========
+            const mixEmojis = ['🎈','🎈','🎈','🎈','🎈','🎀','🎈','🎈','🎈','🎈','🎈','🎈','🎈','🎈','🎈'];
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.textContent = mixEmojis[i % mixEmojis.length];
+                balloon.style.left = (Math.random() * 90 + 5) + '%';
+                const size = Math.random() * 2.5 + 2;
+                balloon.style.fontSize = size + 'rem';
+                balloon.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                balloon.style.animationDelay = (Math.random() * 10) + 's';
+                balloon.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+                document.body.appendChild(balloon);
+            }
+
+            // ========== 主界面照片（dg） ==========
+            const imageList = [
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%871.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%872.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%873.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%874.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%875.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%876.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%877.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%878.jpg"
+            ];
+            const ninthImageUrl = "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%879.jpg";
+            const tenthImageUrl = "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%8710.jpg";
+            const captionList = [
+                "到处都是鼓楼",
+                "忧郁美女？",
+                "兑换码a90m61",
+                "有点刻意了吧",
+                "酷酷的，好看",
+                "熊给我",
+                "这个光和质感，绝",
+                "这个最可爱"
+            ];
+            const positions = [
+                { left: '13.9%', top: '16.8%' },
+                { left: '50%', top: '10.1%' },
+                { left: '86.1%', top: '16.8%' },
+                { left: '10.1%', top: '50%' },
+                { left: '89.9%', top: '50%' },
+                { left: '13.9%', top: '83.3%' },
+                { left: '50%', top: '84%' },
+                { left: '86.1%', top: '83.3%' }
+            ];
+
+            const cake = document.getElementById('cake');
+            const card = document.getElementById('card');
+            const hint = document.getElementById('hint');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+
+            let displayedCount = 0;
+            let imageIndex = 0;
+            let floatingImages = [];
+            let stackDone = false;
+            let cakeCooldown = false;
+            let isLoading = false;
+            let failCount = 0;
+
+            function openLightbox(src) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                setTimeout(() => lightboxImg.src = '', 300);
+            }
+
+            lightbox.addEventListener('click', closeLightbox);
+
+            function addPhotoCaption(parentDiv, text, topPercent) {
+                const caption = document.createElement('div');
+                caption.className = 'photo-caption';
+                caption.textContent = text;
+                if (topPercent > 60) {
+                    caption.classList.add('caption-top');
+                } else {
+                    caption.classList.add('caption-bottom');
+                }
+                parentDiv.appendChild(caption);
+                requestAnimationFrame(() => {
+                    caption.classList.add('show');
+                });
+            }
+
+            cake.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (cakeCooldown || isLoading) return;
+                cakeCooldown = true;
+                setTimeout(() => cakeCooldown = false, 2000);
+                if (hint) hint.style.display = 'none';
+                document.querySelectorAll('.photo-caption').forEach(el => el.remove());
+                if (imageIndex < imageList.length) {
+                    const currentIndex = imageIndex;
+                    const imgUrl = imageList[currentIndex];
+                    const pos = positions[currentIndex];
+                    const captionText = captionList[currentIndex];
+                    isLoading = true;
+                    const img = new Image();
+                    let handled = false;
+                    const timeout = setTimeout(() => {
+                        if (!handled) {
+                            handled = true; isLoading = false; failCount++;
+                            if (hint) { hint.textContent = '加载失败，跳过'; hint.style.color = '#ff6666'; setTimeout(() => { if (hint) { hint.textContent = '点击蛋糕，发现惊喜 🎁'; hint.style.color = ''; } }, 2000); }
+                            if (failCount >= 4) { failCount = 0; imageIndex++; displayedCount++; }
+                        }
+                    }, 3000);
+                    img.onload = function() {
+                        if (handled) return;
+                        handled = true; clearTimeout(timeout); isLoading = false; failCount = 0;
+                        if (hint) { hint.textContent = '点击蛋糕，发现惊喜 🎁'; hint.style.color = ''; }
+                        const floatDiv = document.createElement('div');
+                        floatDiv.className = 'floating-image';
+                        floatDiv.style.left = '50%';
+                        floatDiv.style.top = '50%';
+                        floatDiv.style.transform = 'translate(-50%, -50%) scale(0.3)';
+                        floatDiv.style.opacity = '0';
+                        floatDiv.dataset.src = imgUrl;
+                        img.style.width = '100%';
+                        img.style.height = 'auto';
+                        img.style.borderRadius = '8px';
+                        img.style.display = 'block';
+                        floatDiv.appendChild(img);
+                        document.body.appendChild(floatDiv);
+                        floatingImages.push(floatDiv);
+                        floatDiv.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            openLightbox(imgUrl);
+                        });
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                floatDiv.style.left = pos.left;
+                                floatDiv.style.top = pos.top;
+                                const rotateDeg = (Math.random() * 16 - 8).toFixed(1);
+                                floatDiv.style.transform = `translate(-50%, -50%) scale(1) rotate(${rotateDeg}deg)`;
+                                floatDiv.style.opacity = '1';
+                                setTimeout(() => {
+                                    addPhotoCaption(floatDiv, captionText, parseFloat(pos.top));
+                                }, 500);
+                            });
+                        });
+                        displayedCount++;
+                        imageIndex++;
+                    };
+                    img.onerror = function() {
+                        if (handled) return;
+                        handled = true; clearTimeout(timeout); isLoading = false; failCount++;
+                        if (hint) { hint.textContent = '加载失败，跳过'; hint.style.color = '#ff6666'; setTimeout(() => { if (hint) { hint.textContent = '点击蛋糕，发现惊喜 🎁'; hint.style.color = ''; } }, 2000); }
+                        if (failCount >= 4) { failCount = 0; imageIndex++; displayedCount++; }
+                    };
+                    img.src = imgUrl;
+                } else if (imageIndex === 8 && !stackDone) {
+                    startStackAnimation();
+                }
+            });
+
+            function startStackAnimation() {
+                stackDone = true;
+                card.classList.add('fade-out');
+                document.querySelectorAll('.photo-caption').forEach(el => el.remove());
+                setTimeout(() => {
+                    const isMobile = window.innerWidth <= 600;
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    const ninthCenterX = 50;
+                    const ninthCenterY = 45;
+                    const minOffset = isMobile ? 80 : 160;
+                    const maxOffset = isMobile ? 150 : 250;
+                    floatingImages.forEach((img, index) => {
+                        const angle = Math.random() * Math.PI * 2;
+                        const distance = minOffset + Math.random() * (maxOffset - minOffset);
+                        const dx = Math.cos(angle) * distance;
+                        const dy = Math.sin(angle) * distance;
+                        const leftPercent = ninthCenterX + (dx / viewportWidth) * 100;
+                        const topPercent = ninthCenterY + (dy / viewportHeight) * 100;
+                        const rotate = (Math.random() * 30 - 15).toFixed(1);
+                        const scale = (0.9 + Math.random() * 0.3).toFixed(2);
+                        img.style.left = leftPercent + '%';
+                        img.style.top = topPercent + '%';
+                        img.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rotate}deg)`;
+                        img.style.filter = 'blur(5px)';
+                        img.style.opacity = '0.75';
+                        img.style.zIndex = 20 + index;
+                    });
+                    setTimeout(() => {
+                        const ninthDiv = document.createElement('div');
+                        ninthDiv.className = 'ninth-image';
+                        ninthDiv.style.left = ninthCenterX + '%';
+                        ninthDiv.style.top = ninthCenterY + '%';
+                        ninthDiv.style.transform = 'translate(-50%, -50%) scale(0.3)';
+                        ninthDiv.style.opacity = '0';
+                        ninthDiv.dataset.src = ninthImageUrl;
+                        const ninthImg = document.createElement('img');
+                        ninthImg.src = ninthImageUrl;
+                        ninthImg.alt = '第九张大图';
+                        ninthDiv.appendChild(ninthImg);
+                        document.body.appendChild(ninthDiv);
+                        // 预加载第十张 Q版图片,避免点击时才加载导致卡顿
+                        const tenthPreloadImg = new Image();
+                        tenthPreloadImg.src = tenthImageUrl;
+                        // 第九张出现后1秒点击冷却,防止误触
+                        let ninthClickable = false;
+                        setTimeout(function() { ninthClickable = true; }, 1000);
+                        // 点击第九张图 → 第九张与第十张交叉渐变 (你中有我中有你),最后点击第十张进入 vs话 预进入界面
+                        ninthDiv.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            // 1秒点击冷却检查,防止误触或图片未加载完成时点击
+                            if (!ninthClickable) return;
+                            ninthClickable = false; // 锁定,防止重复触发
+                            // 先创建第十张 (初始状态:opacity 0, scale 0.92)
+                            const tenthDiv = document.createElement('div');
+                            tenthDiv.className = 'ninth-image cross-fade-in';
+                            tenthDiv.style.left = ninthCenterX + '%';
+                            tenthDiv.style.top = ninthCenterY + '%';
+                            tenthDiv.dataset.src = tenthImageUrl;
+                            const tenthImg = document.createElement('img');
+                            tenthImg.src = tenthImageUrl;
+                            tenthImg.alt = '第十张 Q版';
+                            tenthDiv.appendChild(tenthImg);
+                            document.body.appendChild(tenthDiv);
+                            // 点击第十张 → 第十张快速淡出 + 桥接界面同步渐入
+                            tenthDiv.addEventListener('click', function(ev) {
+                                ev.stopPropagation();
+                                // 第十张淡出动画
+                                tenthDiv.style.transition = 'none';
+                                tenthDiv.classList.remove('cross-fade-in');
+                                tenthDiv.classList.add('cross-fade-out-quick');
+                                // 同步显示桥接界面 (与第十张淡出同时)
+                                pageContent.classList.remove('active');
+                                bridgeOverlay.classList.add('show');
+                                // 0.6s 后第十张隐藏 + 隐藏其他浮图
+                                setTimeout(function() {
+                                    document.querySelectorAll('.floating-image, .ninth-image').forEach(el => { el.style.display = 'none'; });
+                                }, 600);
+                            });
+                            // 同时触发交叉渐变:第九张添 .cross-fade-out,第十张靠 class 里的 animation
+                            // 移除第九张的 transition 避免和 animation 冲突
+                            ninthDiv.style.transition = 'none';
+                            ninthDiv.classList.add('cross-fade-out');
+                            // 1.5s 后隐藏第九张 (动画完成后)
+                            setTimeout(function() {
+                                ninthDiv.style.display = 'none';
+                            }, 2300);
+                        });
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                ninthDiv.style.transform = 'translate(-50%, -50%) scale(1)';
+                                ninthDiv.style.opacity = '1';
+                            });
+                        });
+                    }, 900);
+                }, 600);
+            }
+
+            // 彩蛋点击粒子
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.cake') || e.target.closest('.floating-image') || e.target.closest('.ninth-image') || e.target.closest('.lightbox') || e.target.closest('.music-toggle') || e.target.closest('.wish-music-toggle')) return;
+                for (let i = 0; i < 12; i++) {
+                    const spark = document.createElement('div');
+                    spark.style.position = 'fixed';
+                    spark.style.left = e.clientX + 'px';
+                    spark.style.top = e.clientY + 'px';
+                    spark.style.width = '8px';
+                    spark.style.height = '8px';
+                    spark.style.borderRadius = '50%';
+                    spark.style.pointerEvents = 'none';
+                    spark.style.zIndex = '9999';
+                    spark.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 120 + 30;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+                    spark.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.4, 1)';
+                    spark.style.opacity = '1';
+                    document.body.appendChild(spark);
+                    requestAnimationFrame(() => {
+                        spark.style.transform = `translate(${dx}px, ${dy}px) scale(0)`;
+                        spark.style.opacity = '0';
+                    });
+                    setTimeout(() => spark.remove(), 900);
+                }
+            });
+
+            // ========== vs话 ==========
+            const bridgeOverlay = document.getElementById('bridgeOverlay');
+            const whisperOverlay = document.getElementById('whisperOverlay');
+            const whisperText = document.getElementById('whisperText');
+            const continueHint = document.getElementById('continueHint');
+            const doneBtn = document.getElementById('doneBtn');
+            const quitWhisperBtn = document.getElementById('quitWhisperBtn');
+            const watchBtn = document.getElementById('watchBtn');
+            const skipBtn = document.getElementById('skipBtn');
+
+            const pages = [
+                "嗯。。。写点什么呢，既然是过生日，那就先祝小寿星生日快乐吧。20岁喽，十位数进一变成2了，成大姑娘了，哈哈哈。祝张可心生日快乐，但不止生日才快乐；愿你今天有蛋糕，明天有拥抱，往后每一天都有不期而遇的温暖，和生生不息的希望。",
+                "既然你厌恶工作，那在此闭口不提，那就，感谢遇见感谢陪伴！挺幸运的不是吗，我一直坚信遇见就是缘，无论是善是恶还是擦肩而过。",
+                "妹，请允许我第一次或许也是最后一次这么叫。女孩子在外面要照顾好保护好自己，好在还有机会再次踏入校园，最干净最自由的地方。在外不用事事都回答，回答也不用事事都解释。哦对了，应该已经在准备考试了吧，好好准备，应该是不会很难的，希望你能考得高高。",
+                "哈哈哈哈，想到啥说啥，走心了别在意，或许你也看不到这吧。行，现在时间不早了，我也该去睡觉了，如果你在半夜打开的话看完也早点休息，安。再次，感谢遇见感谢陪伴！岁月静好是片刻，一地鸡毛是日常。即使世界偶尔薄凉，内心也要繁花似锦。浅浅喜，静静爱，深深懂得，淡淡释怀。唯愿此生岁月无恙，只言温暖不语悲伤。2026.09.01.00.23"
+            ];
+            let currentPage = 0;
+
+            function showPage(index) {
+                whisperText.textContent = pages[index];
+                if (index === pages.length - 1) {
+                    continueHint.style.display = 'none';
+                    doneBtn.style.display = 'inline-block';
+                    doneBtn.classList.remove('done-btn-show');
+                    void doneBtn.offsetWidth;
+                    doneBtn.classList.add('done-btn-show');
+                } else {
+                    continueHint.style.display = 'block';
+                    doneBtn.style.display = 'none';
+                    doneBtn.classList.remove('done-btn-show');
+                }
+            }
+
+            watchBtn.addEventListener('click', function() {
+                bridgeOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    bridgeOverlay.classList.remove('show');
+                    bridgeOverlay.classList.remove('fade-out');
+                    bridgeOverlay.style.display = 'none';
+                    whisperOverlay.classList.add('show');
+                    currentPage = 0;
+                    showPage(currentPage);
+                }, 500);
+            });
+
+            skipBtn.addEventListener('click', function() {
+                bridgeOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    bridgeOverlay.classList.remove('show');
+                    bridgeOverlay.classList.remove('fade-out');
+                    bridgeOverlay.style.display = 'none';
+                    endingOverlay.classList.add('show');
+                }, 500);
+            });
+
+            whisperOverlay.addEventListener('click', function(e) {
+                if (e.target.closest('.done-btn') || e.target.closest('.quit-whisper-btn')) return;
+                if (currentPage < pages.length - 1) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+
+            doneBtn.addEventListener('click', function() {
+                if (isAnimating) return;
+                isAnimating = true;
+                whisperOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    whisperOverlay.classList.remove('show');
+                    whisperOverlay.classList.remove('fade-out');
+                    whisperOverlay.style.display = 'none';
+                    endingOverlay.classList.add('show');
+                    isAnimating = false;
+                }, 500);
+            });
+
+            quitWhisperBtn.addEventListener('click', function() {
+                if (isAnimating) return;
+                isAnimating = true;
+                whisperOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    whisperOverlay.classList.remove('show');
+                    whisperOverlay.classList.remove('fade-out');
+                    whisperOverlay.style.display = 'none';
+                    endingOverlay.classList.add('show');
+                    isAnimating = false;
+                }, 500);
+            });
+
+            // ========== pre ==========
+            const endingOverlay = document.getElementById('endingOverlay');
+            const endingRestartBtn = document.getElementById('endingRestartBtn');
+            const eggBtn = document.getElementById('eggBtn');
+            const eggBlackScreen = document.getElementById('eggBlackScreen');
+            const eggDisplay = document.getElementById('eggDisplay');
+            const passwordOverlay = document.getElementById('passwordOverlay');
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordBtn = document.getElementById('passwordBtn');
+            const passwordError = document.getElementById('passwordError');
+
+            let passwordAttempts = 0;
+            let eggStep = 0;
+            let lastClickTime = 0;
+            let musicWasPlaying = false;
+
+            endingRestartBtn.addEventListener('click', function() {
+                location.reload();
+            });
+
+            function shakeInput() {
+                passwordInput.classList.remove('shake');
+                void passwordInput.offsetWidth;
+                passwordInput.classList.add('shake');
+            }
+
+            function resetPassword() {
+                passwordAttempts = 0;
+                passwordInput.value = '';
+                passwordError.textContent = '';
+                passwordInput.classList.remove('shake');
+            }
+
+            passwordBtn.addEventListener('click', function() {
+                if (isAnimating) return;
+                isAnimating = true;
+                const inputValue = passwordInput.value.trim();
+                if (inputValue === '') {
+                    passwordError.textContent = '请输入密码';
+                    shakeInput();
+                    isAnimating = false;
+                    return;
+                }
+                passwordAttempts++;
+                if (passwordAttempts < 3) {
+                    passwordError.textContent = '密码错误，再试试';
+                    shakeInput();
+                    passwordInput.value = '';
+                    isAnimating = false;
+                } else {
+                    passwordOverlay.classList.add('fade-out');
+                    setTimeout(() => {
+                        passwordOverlay.classList.remove('show');
+                        passwordOverlay.classList.remove('fade-out');
+                        eggBlackScreen.classList.add('active');
+                        eggStep = 0;
+                        lastClickTime = Date.now();
+                        showEggStep();
+                        isAnimating = false;
+                    }, 600);
+                }
+            });
+
+            const eggSequence = [
+                { type: 'text', content: '呦，这么聪明就搞到了密码ʘᴗʘ', cooldown: 1000 },
+                { type: 'text', content: '不对，你点进来干嘛', cooldown: 1000 },
+                { type: 'text', content: '这里什么都没有', cooldown: 1000 },
+                { type: 'text', content: '别点了，后面是空的', cooldown: 1000 },
+                { type: 'text', content: '隐藏剧情？no no no', cooldown: 1000 },
+                { type: 'text', content: '没有彩蛋别看了(σ≧︎▽︎≦︎)σ。', cooldown: 1000 },
+                { type: 'text', content: '不听劝是吧', cooldown: 1000 },
+                { type: 'text', content: '其实这里没网了', cooldown: 1000 },
+                { type: 'text', content: '网络连接中……骗你的(•̀⌄•́)', cooldown: 1000 },
+                { type: 'text', content: '中奖了，奖励再点一次', cooldown: 1000 },
+                { type: 'text', content: '恭喜你，浪费了一次点击', cooldown: 1000 },
+                { type: 'text', content: '再点我就关机了', cooldown: 1000 },
+                { type: 'text', content: '准备，三、二、一……', cooldown: 1000, special: true },
+                { type: 'text', content: '彩蛋', className: 'big', cooldown: 1500, special: true },
+                { type: 'text', content: '哈哈哈哈哈哈(ಡωಡ)hiahiahia', className: 'normal', cooldown: 1000 },
+                { type: 'text', content: '您的网络已欠费，请续费后继续点击', cooldown: 1000 },
+                { type: 'text', content: '怎么还真点啊', cooldown: 1000 },
+                { type: 'text', content: '系统检测到您过于好奇(◔◡◔)', cooldown: 1000 },
+                { type: 'text', content: '正在加载彩蛋……0%', cooldown: 1000 },
+                { type: 'text', content: '乖，听话，咱不点了', cooldown: 1000 },
+                { type: 'text', content: '编不出来了ʅ( ･´‸･｀)ʃ', cooldown: 1000 },
+                { type: 'text', content: '别急啊，让我再编一会儿', cooldown: 1000 },
+                { type: 'text', content: '你手不累吗⚆_⚆？', cooldown: 1000 },
+                { type: 'text', content: '警告：再点一次屏幕会爆炸', cooldown: 1000 },
+                { type: 'text', content: '来了，别眨眼', cooldown: 1000 },
+                { type: 'egg', content: '喏，给你个蛋', cooldown: 1800, special: true },
+                { type: 'text', content: '彩色鸡蛋，只许看，不许吃 (╯▽╰ )好香~~', cooldown: 1000 },
+                { type: 'text', content: '走吧后面没东西了', cooldown: 1000 },
+                { type: 'text', content: '信号不好，我先挂了(๑╹ヮ╹๑)ﾉ', cooldown: 1000 },
+                { type: 'text', content: '兑换码：v35sd2a51kf', cooldown: 1000 },
+                { type: 'text', content: '你是我见过最执着的人', cooldown: 1000 },
+                { type: 'text', content: '您的耐心已超出系统上限', cooldown: 1000 },
+                { type: 'text', content: '哎呀，都到这了', cooldown: 1000 },
+                { type: 'text', content: '好了好了不逗你了', cooldown: 1000 },
+                { type: 'text', content: '你赢了，我投降', cooldown: 1000 },
+                { type: 'final', content: '最后一下，不许再反悔(ง •̀_•́)ง', cooldown: 1000, special: true }
+            ];
+
+            function getRandomColor() {
+                const colors = ['#fff', '#ffe9b8', '#ffb6c1', '#b8e0ff', '#ffd700', '#b0ffb0', '#ffb3ff', '#e0c0ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            function getRandomRotation() {
+                return (Math.random() * 30 - 15).toFixed(1) + 'deg';
+            }
+            function getRandomScale() {
+                return (Math.random() * 0.2 + 0.9).toFixed(2);
+            }
+            function applyTransition(el, special) {
+                if (special) {
+                    el.style.transition = 'opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1)';
+                } else {
+                    el.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.4, 1)';
+                }
+            }
+
+            /* ---- Module.Pre ---- */
+            function showEggStep() {
+                if (eggStep >= eggSequence.length) return;
+                const step = eggSequence[eggStep];
+                eggDisplay.innerHTML = '';
+                const color = getRandomColor();
+                const rotation = getRandomRotation();
+                const scale = getRandomScale();
+                const offsetX = (Math.random() * 160 - 80).toFixed(0);
+                const offsetY = (Math.random() * 100 - 50).toFixed(0);
+                const initialScale = 0.95;
+                if (step.type === 'text') {
+                    const div = document.createElement('div');
+                    div.className = `egg-text ${step.className || ''}`;
+                    div.textContent = step.content;
+                    div.style.color = color;
+                    div.style.marginLeft = offsetX + 'px';
+                    div.style.marginTop = offsetY + 'px';
+                    div.style.opacity = '0';
+                    div.style.transform = `rotate(${rotation}) scale(${initialScale})`;
+                    applyTransition(div, step.special || false);
+                    eggDisplay.appendChild(div);
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            div.style.opacity = '1';
+                            div.style.transform = `rotate(${rotation}) scale(${scale})`;
+                        });
+                    });
+                } else if (step.type === 'egg') {
+                    const egg = document.createElement('div');
+                    egg.className = 'egg-image';
+                    egg.textContent = '🥚';
+                    egg.style.marginLeft = offsetX + 'px';
+                    egg.style.marginTop = offsetY + 'px';
+                    egg.style.opacity = '0';
+                    egg.style.transform = `rotate(${rotation}) scale(${initialScale})`;
+                    applyTransition(egg, step.special || false);
+                    eggDisplay.appendChild(egg);
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            egg.style.opacity = '1';
+                            egg.style.transform = `rotate(${rotation}) scale(${scale})`;
+                        });
+                    });
+                    const text = document.createElement('div');
+                    text.className = `egg-text ${step.className || ''}`;
+                    text.textContent = step.content;
+                    text.style.color = color;
+                    text.style.marginLeft = offsetX + 'px';
+                    text.style.marginTop = (parseInt(offsetY) + 30) + 'px';
+                    text.style.opacity = '0';
+                    text.style.transform = `rotate(${rotation}) scale(${initialScale})`;
+                    applyTransition(text, step.special || false);
+                    eggDisplay.appendChild(text);
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            text.style.opacity = '1';
+                            text.style.transform = `rotate(${rotation}) scale(${scale})`;
+                        });
+                    });
+                } else if (step.type === 'final') {
+                    const div = document.createElement('div');
+                    div.className = `egg-text ${step.className || ''}`;
+                    div.textContent = step.content;
+                    div.style.color = color;
+                    div.style.marginLeft = offsetX + 'px';
+                    div.style.marginTop = offsetY + 'px';
+                    div.style.opacity = '0';
+                    div.style.transform = `rotate(${rotation}) scale(${initialScale})`;
+                    applyTransition(div, step.special || false);
+                    eggDisplay.appendChild(div);
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            div.style.opacity = '1';
+                            div.style.transform = `rotate(${rotation}) scale(${scale})`;
+                        });
+                    });
+                }
+            }
+
+            eggBtn.addEventListener('click', function() {
+                musicWasPlaying = !bgm.paused;
+                if (musicWasPlaying) {
+                    bgm.pause();
+                    musicToggle.textContent = '🔇';
+                }
+                endingOverlay.classList.remove('show');
+                resetPassword();
+                passwordOverlay.classList.add('show');
+                passwordInput.focus();
+            });
+
+            eggBlackScreen.addEventListener('click', function() {
+                const now = Date.now();
+                const currentCooldown = eggSequence[eggStep]?.cooldown || 1000;
+                if (now - lastClickTime < currentCooldown) return;
+                lastClickTime = now;
+                eggStep++;
+                if (eggStep < eggSequence.length) {
+                    showEggStep();
+                } else {
+                    startPuzzleMusic();
+                    eggBlackScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        eggBlackScreen.classList.remove('active');
+                        eggBlackScreen.classList.remove('fade-out');
+                        eggStep = 0;
+                        puzzleOverlay.classList.add('show');
+                    }, 800);
+                }
+            });
+
+            // ========== yx 拼图 ==========
+            const puzzleOverlay = document.getElementById('puzzleOverlay');
+            const puzzleImageList = [
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%871.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%872.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%873.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%874.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%875.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%876.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%877.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%878.jpg",
+                "https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E7%85%A7%E7%89%87/%E7%85%A7%E7%89%871/%E7%85%A7%E7%89%879.jpg"
+            ];
+            let currentImageIndex = 0;
+            let currentImageUrl = puzzleImageList[currentImageIndex];
+
+            const board = document.getElementById('puzzleBoard');
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            const puzzleRestartBtn = document.getElementById('puzzleRestartBtn');
+            // const authorBtn = document.getElementById('authorBtn');
+            const quitBtn = document.getElementById('quitBtn');
+            const changeBtn = document.getElementById('changeBtn');
+            const puzzleMessage = document.getElementById('puzzleMessage');
+            const finishedBtn = document.getElementById('finishedBtn');
+            const codeModal = document.getElementById('codeModal');
+            const codeModalContinue = document.getElementById('codeModalContinue');
+            const codeModalClose = document.getElementById('codeModalClose');
+
+            const SIZE = 3;
+            const TOTAL_TILES = SIZE * SIZE;
+            const EMPTY_INDEX = TOTAL_TILES - 1;
+            const GAP = 4;
+
+            let tiles = [];
+            let tileElements = [];
+            let isShuffled = false;
+
+            function calculateLayout() {
+                const boardWidth = board.clientWidth;
+                const totalGap = GAP * (SIZE + 1);
+                const tileSize = (boardWidth - totalGap) / SIZE;
+                return { boardWidth, tileSize };
+            }
+
+            function getTilePosition(index) {
+                const { tileSize } = calculateLayout();
+                const row = Math.floor(index / SIZE);
+                const col = index % SIZE;
+                const left = GAP + col * (tileSize + GAP);
+                const top = GAP + row * (tileSize + GAP);
+                return { left: `${left}px`, top: `${top}px` };
+            }
+
+            function createTileElements() {
+                board.innerHTML = '';
+                tileElements = [];
+                for (let value = 0; value < TOTAL_TILES; value++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'puzzle-tile';
+                    if (value === EMPTY_INDEX) {
+                        tile.classList.add('empty');
+                    } else {
+                        const row = Math.floor(value / SIZE);
+                        const col = value % SIZE;
+                        tile.style.backgroundImage = `url("${currentImageUrl}")`;
+                        tile.style.backgroundSize = '300% 300%';
+                        tile.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+                    }
+                    const { tileSize } = calculateLayout();
+                    tile.style.width = `${tileSize}px`;
+                    tile.style.height = `${tileSize}px`;
+                    tile.addEventListener('click', () => onTileClick(value));
+                    board.appendChild(tile);
+                    tileElements.push(tile);
+                }
+            }
+
+            function updateTilePositions(animated) {
+                tiles.forEach((value, pos) => {
+                    const tile = tileElements[value];
+                    if (!tile) return;
+                    const position = getTilePosition(pos);
+                    tile.style.left = position.left;
+                    tile.style.top = position.top;
+                });
+                if (!animated) {
+                    tileElements.forEach(tile => tile.style.transition = 'none');
+                    void board.offsetWidth;
+                    tileElements.forEach(tile => tile.style.transition = '');
+                }
+            }
+
+            function updateTileSizes() {
+                const { tileSize } = calculateLayout();
+                tileElements.forEach(tile => {
+                    tile.style.width = `${tileSize}px`;
+                    tile.style.height = `${tileSize}px`;
+                });
+            }
+
+            function lockTiles() {
+                tileElements.forEach(tile => tile.classList.add('locked'));
+            }
+
+            function unlockTiles() {
+                tileElements.forEach(tile => tile.classList.remove('locked'));
+            }
+
+            function hideFinishedButton() {
+                finishedBtn.classList.remove('show');
+            }
+
+            function showFinishedButton() {
+                finishedBtn.classList.add('show');
+            }
+
+            function initPuzzle() {
+                tiles = [];
+                for (let i = 0; i < TOTAL_TILES; i++) tiles.push(i);
+                createTileElements();
+                updateTilePositions(false);
+                lockTiles();
+                isShuffled = false;
+                hideFinishedButton();
+                puzzleMessage.textContent = '点击“打乱拼图”开始';
+            }
+
+            function isSolved() {
+                for (let i = 0; i < TOTAL_TILES; i++) {
+                    if (tiles[i] !== i) return false;
+                }
+                return true;
+            }
+
+            function highlightSolved() {
+                tileElements.forEach((tile, idx) => {
+                    if (tiles[idx] !== EMPTY_INDEX) {
+                        tile.classList.add('solved-highlight');
+                    } else {
+                        tile.classList.remove('solved-highlight');
+                    }
+                });
+            }
+
+            function clearHighlight() {
+                tileElements.forEach(tile => tile.classList.remove('solved-highlight'));
+            }
+
+            function findEmptyIndex() {
+                return tiles.indexOf(EMPTY_INDEX);
+            }
+
+            function isAdjacent(index1, index2) {
+                const r1 = Math.floor(index1 / SIZE);
+                const c1 = index1 % SIZE;
+                const r2 = Math.floor(index2 / SIZE);
+                const c2 = index2 % SIZE;
+                return (Math.abs(r1 - r2) + Math.abs(c1 - c2)) === 1;
+            }
+
+            function swapTiles(indexA, indexB) {
+                [tiles[indexA], tiles[indexB]] = [tiles[indexB], tiles[indexA]];
+            }
+
+            function completePuzzle() {
+                tiles = [];
+                for (let i = 0; i < TOTAL_TILES; i++) tiles.push(i);
+                updateTilePositions(false);
+                lockTiles();
+                isShuffled = false;
+                clearHighlight();
+                highlightSolved();
+                puzzleMessage.textContent = '🎉 拼图完成！';
+                showFinishedButton();
+            }
+
+            function onTileClick(value) {
+                if (isAnimating) return;
+                if (!isShuffled) return;
+                if (value === EMPTY_INDEX) return;
+                const tilePos = tiles.indexOf(value);
+                const emptyPos = findEmptyIndex();
+                if (isAdjacent(tilePos, emptyPos)) {
+                    isAnimating = true;
+                    clearHighlight();
+                    swapTiles(tilePos, emptyPos);
+                    updateTilePositions(true);
+                    setTimeout(() => {
+                        isAnimating = false;
+                        if (isSolved()) {
+                            puzzleMessage.textContent = '🎉 拼图完成！';
+                            highlightSolved();
+                            showFinishedButton();
+                            isShuffled = false;
+                            lockTiles();
+                        } else {
+                            puzzleMessage.textContent = '继续加油～';
+                        }
+                    }, 220);
+                }
+            }
+
+            function shufflePuzzle() {
+                if (isAnimating) return;
+                clearHighlight();
+                hideFinishedButton();
+                puzzleMessage.textContent = '正在打乱...';
+                tiles = [];
+                for (let i = 0; i < TOTAL_TILES; i++) tiles.push(i);
+                let emptyIndex = EMPTY_INDEX;
+                const moves = [
+                    { dr: -1, dc: 0 },
+                    { dr: 1, dc: 0 },
+                    { dr: 0, dc: -1 },
+                    { dr: 0, dc: 1 }
+                ];
+                for (let step = 0; step < 500; step++) {
+                    const r = Math.floor(emptyIndex / SIZE);
+                    const c = emptyIndex % SIZE;
+                    const validMoves = [];
+                    moves.forEach((move) => {
+                        const nr = r + move.dr;
+                        const nc = c + move.dc;
+                        if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {
+                            validMoves.push(nr * SIZE + nc);
+                        }
+                    });
+                    const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+                    swapTiles(emptyIndex, randomMove);
+                    emptyIndex = randomMove;
+                }
+                if (isSolved()) { shufflePuzzle(); return; }
+                updateTilePositions(false);
+                unlockTiles();
+                isShuffled = true;
+                puzzleMessage.textContent = '已经打乱，开始拼吧！';
+            }
+
+            function restartPuzzle() {
+                if (isAnimating) return;
+                clearHighlight();
+                initPuzzle();
+                puzzleMessage.textContent = '已恢复原图';
+            }
+
+            function changeImage() {
+                if (isAnimating) return;
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * puzzleImageList.length);
+                } while (newIndex === currentImageIndex && puzzleImageList.length > 1);
+                currentImageIndex = newIndex;
+                currentImageUrl = puzzleImageList[currentImageIndex];
+                clearHighlight();
+                initPuzzle();
+                puzzleMessage.textContent = '已换一张图片，点击“打乱拼图”开始';
+            }
+
+            function goToNextPage() {
+                fadeOutMusic(puzzleBgm, 1000);
+                puzzleOverlay.classList.remove('show');
+                setTimeout(() => {
+                    creditsOverlay.classList.add('show');
+                    startCredits();
+                }, 900);
+            }
+
+            function skipPuzzle() {
+                if (isAnimating) return;
+                goToNextPage();
+            }
+
+            function showCodeModal() {
+                codeModal.classList.add('show');
+            }
+
+            function hideCodeModal() {
+                codeModal.classList.remove('show');
+            }
+
+            function continueFromModal() {
+                hideCodeModal();
+                goToNextPage();
+            }
+
+            function closeFromModal() {
+                hideCodeModal();
+            }
+
+            shuffleBtn.addEventListener('click', shufflePuzzle);
+            puzzleRestartBtn.addEventListener('click', restartPuzzle);
+            // authorBtn.addEventListener('click', completePuzzle);
+            quitBtn.addEventListener('click', skipPuzzle);
+            changeBtn.addEventListener('click', changeImage);
+            finishedBtn.addEventListener('click', showCodeModal);
+            codeModalContinue.addEventListener('click', continueFromModal);
+            codeModalClose.addEventListener('click', closeFromModal);
+            codeModal.addEventListener('click', function(e) {
+                if (e.target === codeModal) hideCodeModal();
+            });
+            window.addEventListener('resize', () => {
+                updateTileSizes();
+                updateTilePositions(false);
+            });
+            initPuzzle();
+
+            // ========== 拼图音乐（LIKPIA） ==========
+            const puzzleBgm = document.getElementById('puzzleBgm');
+            const puzzleMusicToggle = document.getElementById('puzzleMusicToggle');
+            let puzzleMusicStarted = false;
+            puzzleBgm.volume = 0;
+
+            /* ---- Module.Yx ---- */
+            function startPuzzleMusic() {
+                if (!puzzleMusicStarted) {
+                    puzzleBgm.play().then(() => {
+                        puzzleMusicStarted = true;
+                        fadeInMusic(puzzleBgm, 0.5, 2000);
+                        puzzleMusicToggle.textContent = '🎵';
+                    }).catch(err => console.warn('拼图音乐播放失败:', err));
+                } else if (puzzleBgm.paused) {
+                    puzzleBgm.play();
+                    fadeInMusic(puzzleBgm, 0.5, 2000);
+                    puzzleMusicToggle.textContent = '🎵';
+                }
+            }
+
+            function pausePuzzleMusic() {
+                puzzleBgm.pause();
+                puzzleMusicToggle.textContent = '🔇';
+            }
+
+            puzzleMusicToggle.addEventListener('click', function() {
+                if (puzzleBgm.paused) startPuzzleMusic();
+                else pausePuzzleMusic();
+            });
+
+            // ========== 谢幕环节 ==========
+            const creditsOverlay = document.getElementById('creditsOverlay');
+            const creditsBgm = document.getElementById('creditsBgm');
+            const creditBlock1 = document.getElementById('creditBlock1');
+            const creditBlock2 = document.getElementById('creditBlock2');
+            const creditsContinueHint = document.getElementById('creditsContinueHint');
+            const quitTopBtn = document.getElementById('quitTopBtn');
+            const creditsContent = document.getElementById('creditsContent');
+
+            let creditsReady = false;
+            let creditsOffsetY = 0;
+            let creditsButtonShown = false;
+            let creditsAnimationId = null;
+            let creditsLastTime = 0;
+            const creditsSpeed = 0.04;
+            let creditsBlockHeight = 0;
+
+            function creditsUpdateTransform() {
+                creditsContent.style.transform = 'translateX(-50%) translateY(' + creditsOffsetY + 'px)';
+            }
+
+            /* ---- Module.谢幕 ---- */
+            function startCredits() {
+                if (creditsReady) return;
+                creditsReady = true;
+                creditsBgm.volume = 0;
+                creditsBgm.play().then(() => fadeInMusic(creditsBgm, 0.5, 2500)).catch(err => console.warn('谢幕音乐播放失败:', err));
+                const images = Array.from(creditBlock1.querySelectorAll('img'));
+                let pending = images.length;
+                function imgLoaded() {
+                    pending--;
+                    if (pending <= 0) beginCreditsScroll();
+                }
+                images.forEach(img => {
+                    if (img.complete && img.naturalWidth > 0) {
+                        imgLoaded();
+                    } else {
+                        img.addEventListener('load', imgLoaded);
+                        img.addEventListener('error', imgLoaded);
+                        setTimeout(imgLoaded, 5000);
+                    }
+                });
+                if (images.length === 0) beginCreditsScroll();
+            }
+
+            function beginCreditsScroll() {
+                creditBlock2.innerHTML = creditBlock1.innerHTML;
+                creditBlock2.style.height = creditBlock1.offsetHeight + 'px';
+                creditsBlockHeight = creditBlock1.offsetHeight;
+                creditsContent.classList.add('ready');
+                creditsOffsetY = window.innerHeight;
+                creditsUpdateTransform();
+                creditsLastTime = 0;
+                creditsAnimationId = requestAnimationFrame(creditsScrollStep);
+            }
+
+            function creditsScrollStep(timestamp) {
+                if (!creditsLastTime) creditsLastTime = timestamp;
+                const delta = timestamp - creditsLastTime;
+                creditsLastTime = timestamp;
+                creditsOffsetY -= creditsSpeed * delta;
+                creditsUpdateTransform();
+                if (!creditsButtonShown && creditsOffsetY <= -creditsBlockHeight + window.innerHeight * 0.5) {
+                    creditsButtonShown = true;
+                    creditsContinueHint.classList.add('show');
+                    quitTopBtn.classList.add('show');
+                }
+                if (creditsOffsetY <= -creditsBlockHeight) {
+                    creditsOffsetY += creditsBlockHeight;
+                    creditsUpdateTransform();
+                }
+                creditsAnimationId = requestAnimationFrame(creditsScrollStep);
+            }
+
+            creditsContinueHint.addEventListener('click', function() {
+                creditsContinueHint.classList.remove('show');
+            });
+
+            quitTopBtn.addEventListener('click', function() {
+                fadeOutMusic(creditsBgm, 800);
+                if (creditsAnimationId) cancelAnimationFrame(creditsAnimationId);
+                quitTopBtn.classList.remove('show');
+                creditsContinueHint.classList.remove('show');
+                creditsContent.style.display = 'none';
+
+                // ========== "不听了"后渐入全屏背景图 ==========
+                // 预加载图片,加载完成后触发渐入
+                const endBg = document.getElementById('endBg');
+                const endImg = new Image();
+                const showEndBg = function() {
+                    endBg.classList.add('show');
+                };
+                endImg.onload = showEndBg;
+                endImg.onerror = showEndBg;  // 加载失败也渐入(黑色背景)
+                endImg.src = 'https://wanye2608tengxunyun-1471974707.cos.ap-guangzhou.myqcloud.com/%E7%94%9F%E6%97%A5/%E6%AD%A3%E5%BC%8F/%E9%B8%A3%E8%B0%A2%E5%9B%BE%E7%89%87/%E5%B0%BE%E5%9B%BE.jpg';
+                // 浏览器缓存命中时 complete 可能已是 true(同步),直接渐入
+                if (endImg.complete && endImg.naturalWidth > 0) {
+                    showEndBg();
+                }
+            });
+
+        })();
+    </script>
+
+    <!-- 结尾全屏背景图 -->
+    <div class="end-bg" id="endBg" aria-label="结尾图片"></div>
+</body>
+</html>
+
+
+
